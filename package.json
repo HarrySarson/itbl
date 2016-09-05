@@ -1,0 +1,34 @@
+{
+  "name": "itbl",
+  "version": "1.0.0",
+  "description": "Utility libary so es6 style iterators inspired by lodash",
+  "main": "itbl.js",
+  "scripts": {
+    "b": "babel-node"
+  },
+  "keywords": [
+    "util",
+    "es6",
+    "iterator",
+    "backwards-compatible"
+  ],
+  "author": "Harry Sarson",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-latest": "^6.14.0",
+    "bluebird": "^3.4.1"
+  },
+  "dependencies": {
+    "lodash": "^4.15.0"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
+  }
+}
