@@ -74,19 +74,9 @@ module.exports = function(options) {
   
   return through2.obj(function(file, enc, cb) {
     
-    if( file.isNull() ) 
-      return file;
+    // we only care about file.path
+    // therefore this works if file.contents is null, stream or buffer
     
-    if( file.isStream() )
-      throw new gutil.PluginError(PLUGIN_NAME, 'Streaming not supported');
-    
-    console.log(_.defaults({
-                path: file.path
-              }, 
-              options, 
-              config.base, 
-              config.github
-            ));
     
     let newFile = null,
         er = null;
