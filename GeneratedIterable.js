@@ -1,14 +1,14 @@
 'use strict';
 
-var definitions = require('./definitions'),
-    NiceIterable = require('./NiceIterable');
+var definitions = require('./definitions');
+var wrapIterable = require('./wrapIterable');
 
 var isFunction = require('lodash/isFunction');
 
 module.exports = generateIterable;
 
 /**
- * Wraps a generator function to produce a @link{IteratorUtil.NiceIterable `NiceIterable`}.
+ * Wraps a generator function to produce a @link{itbl.Wrapper wrapped iterable}.
  * 
  * The generator function can be any function that returns an iterator, this includes functions
  * declared `function* gen() {}`.
@@ -21,11 +21,11 @@ module.exports = generateIterable;
  *
  * @private
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {function} generator A function that returns iterators.
  *
- * @returns {IteratorUtil.NiceIterable} An iterable.
+ * @returns {itbl.Wrapper} An iterable.
  *
  */
 function generateIterable(generator) {
@@ -34,7 +34,7 @@ function generateIterable(generator) {
   
   itbl[definitions.iteratorSymbol] = generator;
   
-  return NiceIterable(itbl);     
+  return wrapIterable(itbl);     
   
 }
 

@@ -1,8 +1,8 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable'),
-    getIterator = require('./getIterator'),
-    Wrapper = require('./Wrapper');
+var GeneratedIterable = require('./GeneratedIterable');
+var getIterator = require('./getIterator');
+var Wrapper = require('./Wrapper');
 
 var parseIteratee = require('lodash/iteratee');
 
@@ -18,26 +18,26 @@ module.exports = accumulate;
  *
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {Iterable} iterable Iterable to reduce values of.
  * @param {Function} [iteratee = _.identity] Function to run each value though.
- * @param [initial] Initial Value
+ * @param {*} [initial] Initial Value
  *
- * @returns Returns the accumalated value.
+ * @returns {*} Returns the accumalated value.
  * @throws {Error} Throws an error if iterators are not supported or the argument is not iterable.
  *
  * @example
  * 
  * // uses first value as initial value
- * [...IteratorUtil.accumulate([1, 2, 3, 4], function(sum, n) {
+ * [...itbl.accumulate([1, 2, 3, 4], function(sum, n) {
  *   return sum + n;
  * })];
  * // => [1, 3, 6, 10]
  *
  * let myMap = new Map().set('a', 1).set('b', 2).set('c', 1);
  *
- * let itbl = IteratorUtil.accumulate(myMap, function(result, pair) {
+ * let itbl = itbl.accumulate(myMap, function(result, pair) {
  *   let arr = result.get(pair[1]);
  *
  *   if( arr === undefined )
@@ -49,7 +49,7 @@ module.exports = accumulate;
  *
  * // or
  * 
- * itbl = IteratorUtil.accumulate(myMap.keys(), function(result, key) {
+ * itbl = itbl.accumulate(myMap.keys(), function(result, key) {
  *   let value = myMap.get(key),
  *       arr = result.get(value);
  *

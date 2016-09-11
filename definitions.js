@@ -1,21 +1,26 @@
-'use strict';
+'use strict'; 
 
 var isSymbol = require('lodash/isSymbol');
 var isFunction = require('lodash/isFunction');
  
+
+module.exports = definitions;
  
 
 var supported = typeof Symbol !== 'undefined' && Symbol != null && isSymbol(Symbol.iterator),
     itSymb = supported ? Symbol.iterator : null;
   
-function addProperties(addTo) {
+function definitions(addTo) {
  
   /**
-   * @property {boolean}
-   * @name IteratorUtil.nativeIterators
    * Read only boolean value indicating whether es6 iterators are supported.
    *
+   * @static
+   * @memberOf itbl
    * @since 0.1.0
+   * @property {boolean}
+   * @name nativeIterators
+   *
    * <table>
    *   <tr>
    *   <td colspan="2">Property attributes of <code>nativeIterators</code></td>
@@ -34,11 +39,16 @@ function addProperties(addTo) {
 
 
   /**
-   * @property {string|Symbol}
-   * @name IteratorUtil.iteratorSymbol
-   * Symbol or string used by libary to access iterator method, defaults to `es6`'s `Symbol.iterator`.
-   * Can be overwritten by a symbol or by non null value convertable to a string to allow polyfilled support for iterators.
+   * Symbol or string used by libary to access iterator method, 
+   * defaults to `es6`'s `Symbol.iterator`.
+   * Can be overwritten by a symbol or by any non-null value convertable 
+   * to a string to allow polyfilled support for iterators.
+   *
+   * @static
+   * @memberOf itbl
    * @since 0.1.0
+   * @property {string|Symbol}
+   * @name iteratorSymbol
    *
    * <table>
    *   <tr>
@@ -63,12 +73,10 @@ function addProperties(addTo) {
   });
 }
 
-// add definitions to exports but also export function that
+// add definitions to module but also export function that
 // will add definitions to other objects.
 
-addProperties(addProperties);
-
-module.exports = addProperties;
+definitions(definitions);
 
 
 

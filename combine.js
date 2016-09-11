@@ -1,12 +1,13 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable'),
-    getIterator = require('./getIterator'),
-    isIterable = require('./isIterable');
+var GeneratedIterable = require('./GeneratedIterable');
+var getIterator = require('./getIterator');
+var isIterable = require('./isIterable');
     
 var mapValues = require('lodash/mapValues');
 var reduce = require('lodash/reduce');
 
+module.exports = combine;
 
 /**
  * Combines the iterables in `collection` into a single iterable containing collections
@@ -34,15 +35,15 @@ var reduce = require('lodash/reduce');
  *
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {iterable|Object} collection Collection of iterators
  * @param {string} [finish = 'early'] Flag determining when iteration will finish.
  *
- * @returns {IteratorUtil.NiceIterator} Iterable containing collection of values
+ * @returns {itbl.Wrapper} Iterable containing collection of values
  * @example
  *
- * for(let coor of IteratorUtil.combine({
+ * for(let coor of itbl.combine({
  *   x: [1,2,3,4,5],
  *   y: [1,4,9,16,25]
  * })){
@@ -53,11 +54,11 @@ var reduce = require('lodash/reduce');
  * mySet.add(1);
  * mySet.add(Math);
  *
- * let iterable = IteratorUtil.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet]);
+ * let iterable = itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet]);
  * [...iterable];
  * // [['a', 'alpha', 1], ['b', 'beta', Math]]
  */
-module.exports = function combine(collection, finish) {
+function combine(collection, finish) {
   
   finish = (finish === 'e' || finish === 'early')
     ? 'early' 
@@ -68,7 +69,7 @@ module.exports = function combine(collection, finish) {
         : null;
         
   if( finish == null )
-    throw new Error('IteratorUtil: parameter finish to combine is not reconised');
+    throw new Error('itbl: parameter finish to combine is not reconised');
 
   var create = isIterable(collection)
         ? Array
@@ -138,7 +139,7 @@ module.exports = function combine(collection, finish) {
         if( reduce(its, cb, !!finishLate) ) 
         {
           if( finish === 'together' && anyValues )
-            throw new Error("IteratorUtil: iterables combined with finish === 'together' have not finished together");
+            throw new Error("itbl: iterables combined with finish === 'together' have not finished together");
           
           done = true;
           

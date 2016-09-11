@@ -11,7 +11,7 @@ module.exports = finalValue;
  * If `iterable` has no values, undefined is returned. 
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {Iterable} iterable Iterable to get final value of.
  *
@@ -20,12 +20,12 @@ module.exports = finalValue;
  *
  * @example
  *
- * IteratorUtil.finalValue([1,2,3,4,5,6,7]);
+ * itbl.finalValue([1,2,3,4,5,6,7]);
  * // => `7` (note much quicker to use _.last)
  * 
  * let mySet = new Set().add(1).add('a').add(NaN)
  *
- * IteratorUtil.finalValue(mySet);
+ * itbl.finalValue(mySet);
  *  // => `NaN`
  */
 function finalValue(iterable) {

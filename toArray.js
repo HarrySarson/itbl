@@ -1,7 +1,6 @@
 'use strict';
 
-var accumulate = require('./accumulate'),
-    finalValue = require('./finalValue');
+var getIterator = require('./getIterator');
 
 module.exports = toArray;
 
@@ -12,7 +11,7 @@ module.exports = toArray;
  * within iterable. Behavour is designed to replicate the `es6` syntax: `[...iterable]`.
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {Iterable} iterable Values to put into array.
  *
@@ -27,26 +26,24 @@ module.exports = toArray;
  *   yield 3; 
  * }
  *
- * IteratorUtil.toArray(gen());
+ * itbl.toArray(gen());
  * // [1,2,3]
  *
  * let mySet = new Set();
  * mySet.add(1);
  * mySet.add(Math);
  *
- * IteratorUtil.toArray(mySet);
+ * itbl.toArray(mySet);
  * [1, Math];
  */
 function toArray(iterable) {
   
-  return finalValue(
-    accumulate(
-      iterable, 
-      (arr, val) => {
-        arr.push(val);
-        return arr;
-      }, 
-      []
-    )
-  ); 
+  let it = getIterator(iterable),
+      arr = [],
+      step;
+      
+  while( !(step = it.next()).done )
+    arr.push(step.value);
+  
+  return arr;
 }

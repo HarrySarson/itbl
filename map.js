@@ -1,8 +1,8 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable'),
-    getIterator = require('./getIterator'),
-    Wrapper = require('./Wrapper');
+var GeneratedIterable = require('./GeneratedIterable');
+var getIterator = require('./getIterator');
+var Wrapper = require('./Wrapper');
     
 var parseIteratee = require('lodash/iteratee');
 
@@ -18,23 +18,23 @@ module.exports = map;
  *
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {Iterable} iterable Iterable to map values of.
  * @param {Function} [iteratee = _.identity] Function to run each value though.
  *
- * @returns {IteratorUtil.NiceIterable} New mapped iterable
+ * @returns {itbl.Wrapper} A new mapped iterable
  * @throws {Error} Throws an error if iterators are not supported or the `iterable` is not iterable.
  *
  * @example
  *
- * for(let coor of IteratorUtil.map([0,1,2,3,4,5], x => ({ x, y: Math.exp(x)))) {
+ * for(let coor of itbl.map([0,1,2,3,4,5], x => ({ x, y: Math.exp(x)))) {
  *   context.lineTo(coor.x, coor.y);
  * }
  * 
  * let mySet = new Set().add(1).add('a').add(NaN)
  *
- * [...IteratorUtil.map(mySet, value => value + 1)]
+ * [...itbl.map(mySet, value => value + 1)]
  * // [2, 'a1', NaN]
  *
  * var users = [
@@ -43,7 +43,7 @@ module.exports = map;
  * ];
  *
  * // The `_.property` iteratee shorthand.
- * [...IteratorUtil.map(users, 'user');
+ * [...itbl.map(users, 'user');
  * // => ['barney', 'fred']
  *
  */

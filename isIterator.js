@@ -2,13 +2,15 @@
 
 var isFunction = require('lodash/isFunction');
 
+module.exports = isIterator;
+
 /**
  * Checks if `value` is an iterator according to es6 iterator protocols.
  * An object is an iterator when it implements a next() method.
  * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is correctly classified,
@@ -22,21 +24,21 @@ var isFunction = require('lodash/isFunction');
  * 
  * let iterableInstance = new MyIterable();
  *
- * IteratorUtil.isIterable(iterableInstance);
+ * itbl.isIterable(iterableInstance);
  * // => false (this is an iterable but NOT an iterator)
  *
  * // generator function that is then called
- * IteratorUtil.isIterable(iterableInstance[Symbol.iterator]());
+ * itbl.isIterable(iterableInstance[Symbol.iterator]());
  * // => true (this is both an iterator and also iterable)
  *
- * IteratorUtil.isIterator([1, 2, 3][Symbol.iterator]());
+ * itbl.isIterator([1, 2, 3][Symbol.iterator]());
  * // => true
  *
  * for(let i of ['a'])
- *   IteratorUtil.isIterator(i)
+ *   itbl.isIterator(i)
  * // => false (i is equal to 'a')
  */
-module.exports = function isIterator(value) {
+function isIterator(value) {
   
   return value != null && isFunction(value.next);
     

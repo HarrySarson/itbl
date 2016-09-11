@@ -1,8 +1,8 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable'),
-    getIterator = require('./getIterator'),
-    Wrapper = require('./Wrapper');
+var GeneratedIterable = require('./GeneratedIterable');
+var getIterator = require('./getIterator');
+var Wrapper = require('./Wrapper');
 
 var parseIteratee = require('lodash/iteratee');
 
@@ -10,27 +10,27 @@ var parseIteratee = require('lodash/iteratee');
 module.exports = attach;
 
 /**
- * Attaches `iteratee` to the iterators of `iterator` so that, during iteration, `iteratee` is invoked 
+ * Attaches `iteratee` to the iterators of `iterable` so that, during iteration, `iteratee` is invoked 
  * with the relavant value at every incrementation of `iterable`'s iterator.
  * The iteratee is invoked with one argument: (value).
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {iterable} iterable Iterable whose values to invoke `iteratee` with.
  * @param {Function} [iteratee = _.identity] Function to invoke at each value.
  *
- * @return {IteratorUtil.niceIterator} Returns wrapped (but otherwise unchanged) iterator
+ * @returns {itbl.Wrapper} Returns wrapped (but otherwise unchanged) Iterable
  * @throws {Error} Throws an error if iterators are not supported or the `iterable` is not iterable.
  *
- * [...IteratorUtil.attach([1, 2], function(n) {
+ * [...itbl.attach([1, 2], function(n) {
  *    console.log(n*n)
  * })];
  * // => `[1, 2]`, Logs `1` then `4`.
  *
  * let myMap = new Map().set('a', 1).set('b', 2).set('c', 1);
  *
- * let itbl = IteratorUtil.attach(myMap, function(pair) {
+ * let itbl = itbl.attach(myMap, function(pair) {
  *   console.log(pair[0] + ': ' + pair[1]);
  * });
  * 
@@ -42,7 +42,7 @@ module.exports = attach;
  *
  * // or
  * 
- * itbl = IteratorUtil.attach(myMap.keys(), function(key) {
+ * itbl = itbl.attach(myMap.keys(), function(key) {
  *   console.log(key + ': ' + myMap.get(key));
  * });
  * 

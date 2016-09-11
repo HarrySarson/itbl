@@ -1,8 +1,8 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable'),
-    getIterator = require('./getIterator'),
-    Wrapper = require('./Wrapper');
+var GeneratedIterable = require('./GeneratedIterable');
+var getIterator = require('./getIterator');
+var Wrapper = require('./Wrapper');
 
 var parseIteratee = require('lodash/iteratee');
 
@@ -13,22 +13,22 @@ module.exports = filter;
  *
  *
  * @static
- * @memberOf IteratorUtil
+ * @memberOf itbl
  * @since 0.1.0
  * @param {Iterable} iterable Iterable to filter the values of.
  * @param {Function} [predicate = _.identity] Function to run each value though.
  *
- * @returns {IteratorUtil.Iterable} New filtered iterable
+ * @returns {itbl.Wrapper} New filtered iterable
  * @throws {Error} Throws an error if iterators are not supported or the `iterable` is not iterable.
  *
  * @example
  *
- * [...IteratorUtil.filter([0,1,2,3,4,5], val => val%2 === 0)]
+ * [...itbl.filter([0,1,2,3,4,5], val => val%2 === 0)]
  * // [0,2,4]
  * 
  * let mySet = new Set().add(1).add('a').add(NaN)
  *
- * [...IteratorUtil.filter(mySet, value => _.isFinite)]
+ * [...itbl.filter(mySet, value => _.isFinite)]
  * // [1]
  *
  * var users = [
@@ -36,19 +36,19 @@ module.exports = filter;
  *   { 'user': 'fred',   'age': 40, 'active': false }
  * ];
  *
- * [...IteratorUtil.filter(users, function(o) { return !o.active; })];
+ * [...itbl.filter(users, function(o) { return !o.active; })];
  * // => objects for ['fred']
  *
  * // The `_.matches` iteratee shorthand.
- * [...IteratorUtil.filter(users, { 'age': 36, 'active': true })];
+ * [...itbl.filter(users, { 'age': 36, 'active': true })];
  * // => objects for ['barney']
  *
  * // The `_.matchesProperty` iteratee shorthand.
- * [...IteratorUtil.filter(users, ['active', false])];
+ * [...itbl.filter(users, ['active', false])];
  * // => objects for ['fred']
  *
  * // The `_.property` iteratee shorthand.
- * [...IteratorUtil.filter(users, 'active')];
+ * [...itbl.filter(users, 'active')];
  * // => objects for ['barney']
  *
  */
