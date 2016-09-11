@@ -34,10 +34,9 @@
 <!-- div -->
 
 <h3 id="itblwrapper"><code>itbl.Wrapper()</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L95 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L98 "View in source") [&#x24C9;][1]
 
-Base class with prototype containing chained itbl methods.<br>
-<br>
+Base class with prototype containing chained itbl methods.
 This class is returned by `itbl()` and `itbl.wrap()`.
 
 #### Since
@@ -49,53 +48,38 @@ This class is returned by `itbl()` and `itbl.wrap()`.
 <!-- div -->
 
 <h3 id="itblcombinecollection-finishearly"><code>itbl.combine(collection, [finish='early'])</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L448 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L464 "View in source") [&#x24C9;][1]
 
-Combines the iterables in `collection` into a single iterable containing collections<br>
-<br>
-of values from each iterable in `collection`.<br>
-<br>
-<br>
-<br>
-`collection` can either be an iterable containing iterable values that will be combined<br>
-<br>
-into an iterable containing iterables containing all the values of the iterable from `collection`<br>
-<br>
-or an object whose own, enumerable properties are iterables to be combined into an<br>
-<br>
-iterable containing objects whose own, enumberable properties are the same as `collection`'s<br>
-<br>
-and the values of those properties will be the values of the iterable from `collection`.<br>
-<br>
-<br>
-<br>
-The value of `finish` determines when the iteration ends.<br>
-<br>
-<br>
+Combines the iterables in `collection` into a single iterable containing collections
+of values from each iterable in `collection`.
 <br>
 <br>
-* If `finish === 'early' or 'e'` *(default)* then the iteration ends as soon as the first iterator from<br>
-<br>
-`collection` ends.<br>
-<br>
-<br>
-<br>
-<br>
-* If `finish === 'late' or 'l'` then the iteration continues untill all iterators from `collection` are done.<br>
-<br>
-Values corresponding to iterators that have ended are `undefined`.<br>
-<br>
-<br>
+`collection` can either be an iterable containing iterable values that will be combined
+into an iterable containing iterables containing all the values of the iterable from `collection`
+or an object whose own, enumerable properties are iterables to be combined into an
+iterable containing objects whose own, enumberable properties are the same as `collection`'s
+and the values of those properties will be the values of the iterable from `collection`.
 <br>
 <br>
-* If `finish === 'together' or 't'` then all iterators from `collection` must finish on the same iteration or<br>
+The value of `finish` determines when the iteration ends.
 <br>
-else an `Error` is thrown.<br>
 <br>
-<br>
 <br>
-**Note**: The return value of the iterator is a collection of the of the return values the iterators<br>
+* If `finish === 'early' or 'e'` *(default)* then the iteration ends as soon as the first iterator from
+`collection` ends.
 <br>
+<br>
+<br>
+* If `finish === 'late' or 'l'` then the iteration continues untill all iterators from `collection` are done.
+Values corresponding to iterators that have ended are `undefined`.
+<br>
+<br>
+<br>
+* If `finish === 'together' or 't'` then all iterators from `collection` must finish on the same iteration or
+else an `Error` is thrown.
+<br>
+<br>
+**Note**: The return value of the iterator is a collection of the of the return values the iterators
 from `collection`. Return values corresponding to iterators that have not yet ended are `undefined`
 
 #### Since
@@ -131,7 +115,7 @@ let iterable = itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet]);
 <!-- div -->
 
 <h3 id="itblfilteriterable-predicate_identity"><code>itbl.filter(iterable, [predicate=_.identity])</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L593 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L612 "View in source") [&#x24C9;][1]
 
 Creates a new iterable containing values which the `predicate` returns truthy for.
 
@@ -181,12 +165,10 @@ var users = [
 <!-- div -->
 
 <h3 id="itblfinalvalueiterable"><code>itbl.finalValue(iterable)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L646 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L668 "View in source") [&#x24C9;][1]
 
-Gets and iterator from `iterable` and increments an iterator until <br>
-<br>
-`iterator.next().done === true`. The final value of the iterator is then returned. <br>
-<br>
+Gets and iterator from `iterable` and increments an iterator until 
+`iterator.next().done === true`. The final value of the iterator is then returned. 
 If `iterable` has no values, undefined is returned.
 
 #### Since
@@ -214,15 +196,12 @@ itbl.finalValue(mySet);
 <!-- div -->
 
 <h3 id="itblgetiteratoriterable"><code>itbl.getIterator([iterable=[]])</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L374 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L388 "View in source") [&#x24C9;][1]
 
-Gets iterator from `iterable`. In `es6` environments using default value of `itbl.iteratorSymbol` when<br>
+Gets iterator from `iterable`. In `es6` environments using default value of `itbl.iteratorSymbol` when
+`iterable` is a valid iterator, this is equivilent to calling `iterable[Symbol.iterator]`. This function includes
+support for different values of `itbl.iteratorSymbol` and helpful error messages.
 <br>
-`iterable` is a valid iterator, this is equivilent to calling `iterable[Symbol.iterator]`. This function includes<br>
-<br>
-support for different values of `itbl.iteratorSymbol` and helpful error messages.<br>
-<br>
-<br>
 <br>
 If `iterable == null` then an 'done' iterator is returned.
 
@@ -250,16 +229,12 @@ it.next() // { value: undefined, done: true }
 <!-- div -->
 
 <h3 id="itblisiterablevalue"><code>itbl.isIterable(value)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L229 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L239 "View in source") [&#x24C9;][1]
 
-Checks if `value` is an iterable objectaccording to es6 iterator protocols.<br>
-<br>
-In order to be iterable, an object must implement the @@iterator method,<br>
-<br>
-meaning that the object *(or one of the objects up its prototype chain)* <br>
-<br>
-must have a property with a Symbol.iterator key which defines a function.<br>
-<br>
+Checks if `value` is an iterable objectaccording to es6 iterator protocols.
+In order to be iterable, an object must implement the @@iterator method,
+meaning that the object *(or one of the objects up its prototype chain)* 
+must have a property with a Symbol.iterator key which defines a function.
 *(https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)*
 
 #### Since
@@ -268,8 +243,7 @@ must have a property with a Symbol.iterator key which defines a function.<br>
 1. `value` *(&#42;)*: The value to check.
 
 #### Returns
-*(boolean)*: Returns `true` if `value` is correctly classified,<br>
-<br> else `false`.
+*(boolean)*: Returns `true` if `value` is correctly classified, else `false`.
 
 #### Example
 ```js
@@ -300,12 +274,10 @@ itbl.isIterable({1: 1, 2: 2, 3: 3});
 <!-- div -->
 
 <h3 id="itblisiteratorvalue"><code>itbl.isIterator(value)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L269 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L280 "View in source") [&#x24C9;][1]
 
-Checks if `value` is an iterator according to es6 iterator protocols.<br>
-<br>
-An object is an iterator when it implements a next() method.<br>
-<br>
+Checks if `value` is an iterator according to es6 iterator protocols.
+An object is an iterator when it implements a next() method.
 https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator
 
 #### Since
@@ -314,8 +286,7 @@ https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protoco
 1. `value` *(&#42;)*: The value to check.
 
 #### Returns
-*(boolean)*: Returns `true` if `value` is correctly classified,<br>
-<br> else `false`.
+*(boolean)*: Returns `true` if `value` is correctly classified, else `false`.
 
 #### Example
 ```js
@@ -347,14 +318,11 @@ for(let i of ['a'])
 <!-- div -->
 
 <h3 id="itbliteratorsymbol"><code>itbl.iteratorSymbol()</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L66 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L68 "View in source") [&#x24C9;][1]
 
-Symbol or string used by libary to access iterator method, <br>
-<br>
-defaults to `es6`'s `Symbol.iterator`.<br>
-<br>
-Can be overwritten by a symbol or by any non-null value convertable <br>
-<br>
+Symbol or string used by libary to access iterator method, 
+defaults to `es6`'s `Symbol.iterator`.
+Can be overwritten by a symbol or by any non-null value convertable 
 to a string to allow polyfilled support for iterators.
 
 #### Since
@@ -366,12 +334,10 @@ to a string to allow polyfilled support for iterators.
 <!-- div -->
 
 <h3 id="itblmapiterable-iteratee_identity"><code>itbl.map(iterable, [iteratee=_.identity])</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L697 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L720 "View in source") [&#x24C9;][1]
 
-Creates a new iterable whose iterators will have values coresponding to the value<br>
-<br>
-of the Iterator of the original iterable run through `iteratee`.<br>
-<br>
+Creates a new iterable whose iterators will have values coresponding to the value
+of the Iterator of the original iterable run through `iteratee`.
 The iteratee is invoked with only one argument *(value)*.
 
 #### Since
@@ -410,7 +376,7 @@ var users = [
 <!-- div -->
 
 <h3 id="itblnativeiterators"><code>itbl.nativeIterators()</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L38 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L39 "View in source") [&#x24C9;][1]
 
 Read only boolean value indicating whether es6 iterators are supported.
 
@@ -423,10 +389,9 @@ Read only boolean value indicating whether es6 iterators are supported.
 <!-- div -->
 
 <h3 id="itbltoarrayiterable"><code>itbl.toArray(iterable)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L755 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L779 "View in source") [&#x24C9;][1]
 
-Iterates over `iterable` and creates an array containing the values contained<br>
-<br>
+Iterates over `iterable` and creates an array containing the values contained
 within iterable. Behavour is designed to replicate the `es6` syntax: `[...iterable]`.
 
 #### Since
@@ -462,42 +427,30 @@ itbl.toArray(mySet);
 <!-- div -->
 
 <h3 id="itblwrapvalue"><code>itbl.wrap(value)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L307 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L320 "View in source") [&#x24C9;][1]
 
-Wraps an iterable, iterator, generator function (any function<br>
+Wraps an iterable, iterator, generator function (any function
+that returns iterators), or a value to produce an objcet that conforms to the
+iterable protocol *(and iterator protocol if `value` is an iterator)*. 
 <br>
-that returns iterators), or a value to produce an objcet that conforms to the<br>
 <br>
-iterable protocol *(and iterator protocol if `value` is an iterator)*. <br>
+If a value is provided that is not an iterable or an iterator, or is a function that does
+not return iterators, it *(or its return value)* is wrapped in an iterable so that `itbl(6)`
+is equivilent to both `itbl(function() { return 6; })` and `itbl([6])`
 <br>
-<br>
 <br>
-If a value is provided that is not an iterable or an iterator, or is a function that does<br>
+All itbl functions that take an iterable as their first parameter
+and return an iterable are chainable and so can be called as methods of the
+wrapped value.
 <br>
-not return iterators, it *(or its return value)* is wrapped in an iterable so that `itbl(6)`<br>
 <br>
-is equivilent to both `itbl(function() { return 6; })` and `itbl([6])`<br>
+The chainable methods are:
 <br>
-<br>
 <br>
-All itbl functions that take an iterable as their first parameter<br>
+`filter` and `map`.
 <br>
-and return an iterable are chainable and so can be called as methods of the<br>
 <br>
-wrapped value.<br>
-<br>
-<br>
-<br>
-The chainable methods are:<br>
-<br>
-<br>
-<br>
-`filter` and `map`.<br>
-<br>
-<br>
-<br>
-In custom builds, including a function in the build will attach that function<br>
-<br>
+In custom builds, including a function in the build will attach that function
 as a method to all wrapped values.
 
 #### Since
@@ -518,13 +471,11 @@ as a method to all wrapped values.
 <!-- div -->
 
 <h3 id="itblwrapiterableiterable"><code>itbl.wrapIterable(iterable)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L150 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L157 "View in source") [&#x24C9;][1]
 
-Wraps an iterable, adding chainable itbl methods.<br>
+Wraps an iterable, adding chainable itbl methods.
+The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to the iterable protocol.
 <br>
-The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to the iterable protocol.<br>
-<br>
-<br>
 <br>
 **Note**: There is no error checking.
 
@@ -540,17 +491,13 @@ The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to the iter
 <!-- div -->
 
 <h3 id="itblwrapiteratoriterator"><code>itbl.wrapIterator(iterator)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L117 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/blob/1.0.0/itbl.js#L122 "View in source") [&#x24C9;][1]
 
-Wraps an iterator, adding chainable itbl methods.<br>
+Wraps an iterator, adding chainable itbl methods.
+The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to both the 
+iterable protocol and the iterator protocol as well as defining the `return()`
+and `throw()` methods if *(and only if)* `iterator` defines them.
 <br>
-The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to both the <br>
-<br>
-iterable protocol and the iterator protocol as well as defining the `return()`<br>
-<br>
-and `throw()` methods if *(and only if)* `iterator` defines them.<br>
-<br>
-<br>
 <br>
 **Note**: There is no error checking.
 

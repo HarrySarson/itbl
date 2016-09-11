@@ -1,6 +1,7 @@
 const
   gulp = require('gulp'),
   gutil = require('gulp-util'),
+  lec = require('gulp-line-ending-corrector'),
   rename = require('gulp-rename'),
   runseq = require('run-sequence'),
   replace = require('gulp-replace'),
@@ -35,6 +36,7 @@ gulp.task('build', function() {
     .pipe(buildDist({
       debug: false,
     }))
+    .pipe(lec())
     // remove double blank lines
     .pipe(replace(/^(\s*?)(\r\n|\r|\n)\s*$/gm, '\n'))
     // remove blanks lines at beggining of file

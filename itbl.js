@@ -12,11 +12,12 @@
 var isSymbol = _.isSymbol
 var isFunction = _.isFunction
 
+
 var supported = typeof Symbol !== 'undefined' && Symbol != null && isSymbol(Symbol.iterator),
     itSymb = supported ? Symbol.iterator : null;
-
+  
 function definitions(addTo) {
-
+ 
   /**
    * Read only boolean value indicating whether es6 iterators are supported.
    *
@@ -41,6 +42,7 @@ function definitions(addTo) {
     configurable: false,
     writable: false
   });
+
 
   /**
    * Symbol or string used by libary to access iterator method, 
@@ -82,6 +84,7 @@ function definitions(addTo) {
 
 definitions(definitions);
 
+
 /** 
  * Base class with prototype containing chained itbl methods.
  * This class is returned by `itbl()` and `itbl.wrap()`.
@@ -94,7 +97,9 @@ definitions(definitions);
  */
 var Wrapper = function() {};
 
+
 var bind = _.bind
+
 
 // the es6 way to implement this class probabaly uses Proxy.
 
@@ -115,23 +120,25 @@ var bind = _.bind
  *
  */
 function wrapIterator(iterator) {
-
+    
   var wrapper = new Wrapper();
-
+                          
   wrapper.next = bind(iterator.next, iterator);
-
+  
   wrapper[definitions.iteratorSymbol] = function() { return this; }  
-
+  
   if( isFunction(iterator['return']) ) 
     wrapper['return'] = bind(iterator['return'], iterator);
-
+     
   if( isFunction(iterator['throw']) )
     wrapper.throw = bind(iterator['throw'], iterator);
-
+    
   return wrapper;
 }
 
+
 // the es6 way to implement this class probabaly uses Proxy.
+
 
 /**
  * Wraps an iterable, adding chainable itbl methods.
@@ -149,15 +156,17 @@ function wrapIterator(iterator) {
  */
 function wrapIterable(iterable) {
 
-  var wrapper = new Wrapper();
 
+  var wrapper = new Wrapper();
+    
   wrapper[definitions.iteratorSymbol] = function() {
     return wrapIterator(iterable[definitions.iteratorSymbol]());
   };
 
   return wrapper;
-
+  
 }
+
 
 /**
  * Wraps a generator function to produce a @link{itbl.Wrapper wrapped iterable}.
@@ -181,14 +190,15 @@ function wrapIterable(iterable) {
  *
  */
 function generateIterable(generator) {
-
+    
   var itbl = {};
-
+  
   itbl[definitions.iteratorSymbol] = generator;
-
+  
   return wrapIterable(itbl);     
-
+  
 }
+
 
 /**
  * Checks if `value` is an iterable objectaccording to es6 iterator protocols.
@@ -227,10 +237,11 @@ function generateIterable(generator) {
  * // => false
  */
 function isIterable(value) {
-
+    
   return value != null && isFunction(value[definitions.iteratorSymbol]);
-
+  
 };
+
 
 /**
  * Checks if `value` is an iterator according to es6 iterator protocols.
@@ -267,12 +278,14 @@ function isIterable(value) {
  * // => false (i is equal to 'a')
  */
 function isIterator(value) {
-
+  
   return value != null && isFunction(value.next);
-
+    
 };
 
+
 var constant = _.constant
+
 
 /** 
  * Wraps an iterable, iterator, generator function (any function
@@ -305,20 +318,20 @@ var constant = _.constant
  *
  */
 function wrap(value) {
-
+  
   if( isIterator(value) )
     return wrapIterator(value);
-
+  
   // note iterators may also be iterable but they are treated as iterators
   if( isIterable(value) )
     return wrapIterable(value);
-
+  
   if( isFunction(value) )
     return GeneratedIterable(function(){
-
+      
       var it = value(),
           count = 0;
-
+      
       if( isIterator(it) )
         return it;
       else 
@@ -330,11 +343,11 @@ function wrap(value) {
           }          
         }
     });
-
+  
   return GeneratedIterable(function(){
-
+    
     var count = 0;
-
+    
     return {
       next: function(){ 
         return count++
@@ -344,6 +357,7 @@ function wrap(value) {
     }
   }); 
 }
+
 
 /**
  * Gets iterator from `iterable`. In `es6` environments using default value of `itbl.iteratorSymbol` when
@@ -372,29 +386,31 @@ function wrap(value) {
  *
  */
 function getIterator(iterable) {
-
+  
   if( definitions.iteratorSymbol == null )
     throw new Error('itbl: Iterators are natively not supported, set itbl.iteratorSymbol to use iterators');  
-
+         
   if( iterable === undefined )
     return { 
       next: function() { return { done: true }; } 
     };
-
+  
   if( !isIterable(iterable) )
     throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method not defined).');
-
+  
   var iterator = iterable[definitions.iteratorSymbol]();
-
+    
   if( !isIterator(iterator) )
     throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method does not return an iterator.');
 
   return wrapIterator(iterator);    
-
+  
 }
+
 
 var mapValues = _.mapValues
 var reduce = _.reduce
+
 
 /**
  * Combines the iterables in `collection` into a single iterable containing collections
@@ -446,7 +462,7 @@ var reduce = _.reduce
  * // [['a', 'alpha', 1], ['b', 'beta', Math]]
  */
 function combine(collection, finish) {
-
+  
   finish = (finish === 'e' || finish === 'early')
     ? 'early' 
     : (finish === 'l' || finish === 'late')
@@ -454,37 +470,38 @@ function combine(collection, finish) {
       : (finish === 't' || finish === 'together')
         ? 'together'
         : null;
-
+        
   if( finish == null )
     throw new Error('itbl: parameter finish to combine is not reconised');
 
   var create = isIterable(collection)
         ? Array
         : Object,
-
+      
       finishLate = (finish === 'late');
 
-  return GeneratedIterable(function() {
 
+  return GeneratedIterable(function() {
+    
     // TODO slightly unhelpful error message generated
     // also mapValues on array converts to an object, don't that that
     // makes any difference
-
+    
     var its = mapValues(collection, getIterator),
         done = false;
-
+        
     var returnValues = create(),
         anyValues,
         values,
-
+          
         cb = finishLate
           ? function lateCb(every, it, key) {
-
+        
             if( returnValues.hasOwnProperty(key) )
               return every;
-
+            
             var step = it.next();
-
+            
             if( step.done )
             {
               returnValues[key] = step.value;
@@ -497,9 +514,9 @@ function combine(collection, finish) {
             }
           }
           : function earlyCb(some, it, key) {
-
+            
             var step = it.next();
-
+                
             if( step.done )
             {
               returnValues[key] = step.value;
@@ -512,22 +529,22 @@ function combine(collection, finish) {
               return some;
             }
           };
-
+        
     return {
       next: function() {
         if( done )
           return { done: true }
-
+        
         values = create();
         anyValues = false;
-
+        
         if( reduce(its, cb, !!finishLate) ) 
         {
           if( finish === 'together' && anyValues )
             throw new Error("itbl: iterables combined with finish === 'together' have not finished together");
-
+          
           done = true;
-
+          
           return {
             value: returnValues,
             done: true
@@ -541,10 +558,12 @@ function combine(collection, finish) {
       }
     };
   });
-
+  
 };
 
+
 var parseIteratee = _.iteratee
+
 
 /**
  * Creates a new iterable containing values which the `predicate` returns truthy for. 
@@ -594,31 +613,34 @@ function filter(iterable, predicate) {
 
   predicate = parseIteratee(predicate);
 
+
   return GeneratedIterable(function() {
-
+    
     var it = getIterator(iterable);
-
+    
     return {
-
+      
       next: function FilteredIterator() {
-
+        
         var step;
 
         while( !(step = it.next()).done && !predicate(step.value) );
-
+        
         if( step.done )
           return { done: true };
         else
           return { value: step.value, done: false };
       }      
     };
-
+    
   });
 }
+
 
 Wrapper.prototype.filter = function(predicate) {
   return filter(this, predicate);
 };
+
 
 /**
  * Gets and iterator from `iterable` and increments an iterator until 
@@ -644,17 +666,18 @@ Wrapper.prototype.filter = function(predicate) {
  *  // => `NaN`
  */
 function finalValue(iterable) {
-
+      
   var it = getIterator(iterable);
-
+  
   var value, step;
-
+  
   while( !(step = it.next()).done )
     value = step.value;
-
+  
   return value;
 
 }
+
 
 // TODO make sure iterator is closed if mapping is interupted
 
@@ -695,32 +718,33 @@ function finalValue(iterable) {
  *
  */
 function map(iterable, iteratee) {
-
+  
   iteratee = parseIteratee(iteratee);
-
+    
   return GeneratedIterable(function() {
-
+    
     var it = getIterator(iterable);
-
+    
     return {
-
+      
       next: function MappedIterator() {
-
+        
         var step = it.next();
-
+        
         if( step.done )
           return { done: true };
         else
           return { value: iteratee(step.value), done: false };
       }      
     };
-
+    
   });
 }
-
+ 
 Wrapper.prototype.map = function(iteratee) {
   return map(this, iteratee);
 };
+
 
 /**
  * Iterates over `iterable` and creates an array containing the values contained
@@ -753,16 +777,17 @@ Wrapper.prototype.map = function(iteratee) {
  * [1, Math];
  */
 function toArray(iterable) {
-
+  
   let it = getIterator(iterable),
       arr = [],
       step;
-
+      
   while( !(step = it.next()).done )
     arr.push(step.value);
-
+  
   return arr;
 }
+
 
 var itbl = function itbl(value) {
   return wrap(value);
@@ -779,6 +804,7 @@ itbl.map = map;
 itbl.toArray = toArray;
 itbl.itbl = itbl;
 itbl.wrap = wrap;
+
 
 return itbl;
 }));
