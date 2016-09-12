@@ -327,7 +327,7 @@ function wrap(value) {
     return wrapIterable(value);
   
   if( isFunction(value) )
-    return GeneratedIterable(function(){
+    return generateIterable(function(){
       
       var it = value(),
           count = 0;
@@ -344,7 +344,7 @@ function wrap(value) {
         }
     });
   
-  return GeneratedIterable(function(){
+  return generateIterable(function(){
     
     var count = 0;
     
@@ -481,7 +481,7 @@ function combine(collection, finish) {
       finishLate = (finish === 'late');
 
 
-  return GeneratedIterable(function() {
+  return generateIterable(function() {
     
     // TODO slightly unhelpful error message generated
     // also mapValues on array converts to an object, don't that that
@@ -614,7 +614,7 @@ function filter(iterable, predicate) {
   predicate = parseIteratee(predicate);
 
 
-  return GeneratedIterable(function() {
+  return generateIterable(function() {
     
     var it = getIterator(iterable);
     
@@ -721,7 +721,7 @@ function map(iterable, iteratee) {
   
   iteratee = parseIteratee(iteratee);
     
-  return GeneratedIterable(function() {
+  return generateIterable(function() {
     
     var it = getIterator(iterable);
     

@@ -1,6 +1,6 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable');
+var generateIterable = require('./generateIterable');
 var getIterator = require('./getIterator');
 var Wrapper = require('./Wrapper');
 
@@ -57,7 +57,7 @@ function filter(iterable, predicate) {
   predicate = parseIteratee(predicate);
     
   
-  return GeneratedIterable(function() {
+  return generateIterable(function() {
     
     var it = getIterator(iterable);
     

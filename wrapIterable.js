@@ -17,6 +17,7 @@ module.exports = wrapIterable;
  *
  * **Note**: There is no error checking.
  *
+ * @private
  * @static
  * @memberOf itbl
  * @since 0.1.0

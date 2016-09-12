@@ -1,6 +1,6 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable');
+var generateIterable = require('./generateIterable');
 var getIterator = require('./getIterator');
 var isIterable = require('./isIterable');
     
@@ -79,7 +79,7 @@ function combine(collection, finish) {
       
      
   
-  return GeneratedIterable(function() {
+  return generateIterable(function() {
     
     // TODO slightly unhelpful error message generated
     // also mapValues on array converts to an object, don't that that

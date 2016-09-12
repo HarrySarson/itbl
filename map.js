@@ -1,6 +1,6 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable');
+var generateIterable = require('./generateIterable');
 var getIterator = require('./getIterator');
 var Wrapper = require('./Wrapper');
     
@@ -51,7 +51,7 @@ function map(iterable, iteratee) {
   
   iteratee = parseIteratee(iteratee);
     
-  return GeneratedIterable(function() {
+  return generateIterable(function() {
     
     var it = getIterator(iterable);
     

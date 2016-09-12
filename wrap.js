@@ -1,6 +1,6 @@
 'use strict';
 
-var GeneratedIterable = require('./GeneratedIterable');
+var generateIterable = require('./generateIterable');
 var wrapIterable = require('./wrapIterable');
 var wrapIterator = require('./wrapIterator');
 var isIterable = require('./isIterable');
@@ -51,7 +51,7 @@ function wrap(value) {
     return wrapIterable(value);
   
   if( isFunction(value) )
-    return GeneratedIterable(function(){
+    return generateIterable(function(){
       
       var it = value(),
           count = 0;
@@ -68,7 +68,7 @@ function wrap(value) {
         }
     });
   
-  return GeneratedIterable(function(){
+  return generateIterable(function(){
     
     var count = 0;
     

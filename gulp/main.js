@@ -18,7 +18,6 @@ definitions(itbl);
 
 itbl.combine = combine;
 itbl.filter = filter;
-itbl.finalValue = finalValue;
 itbl.isIterable = isIterable;
 itbl.isIterator = isIterator;
 itbl.map = map;
