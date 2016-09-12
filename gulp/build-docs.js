@@ -11,9 +11,9 @@ const version = pkg.version;
 
 const config = {
   'base': {
-    'title': `<a href="http://harrysarson.magic.net/">Harry Sarson</a> <span>v${ version }</span>`,
+    'title': `<a href="https://github.com/HarrySarson/itbl">itbl</a> <span>${ version }</span>`,
     'toc': 'categories',
-    'url': `https://github.com/HarrySarson/itbl/blob/${ version }/itbl.js`
+    'url': `https://github.com/HarrySarson/itbl/tree/${ version }/itbl.js`
   },
   'github': {
     'style': 'github',
