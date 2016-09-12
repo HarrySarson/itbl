@@ -4,7 +4,6 @@ var wrap = require('../wrap');
 var definitions = require('../definitions');
 var combine = require('../combine');
 var filter = require('../filter');
-var finalValue = require('../finalValue');
 var isIterable = require('../isIterable');
 var isIterator = require('../isIterator');
 var map = require('../map');
