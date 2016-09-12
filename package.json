@@ -1,6 +1,6 @@
 {
   "name": "itbl",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Utility libary so es6 style iterators inspired by lodash",
   "main": "itbl.js",
   "scripts": {},
