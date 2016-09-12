@@ -12,7 +12,7 @@
     "iterator",
     "backwards-compatible"
   ],
-  "respository": "https://github.com/HarrySarson/itbl",
+  "repository": "https://github.com/HarrySarson/itbl",
   "author": "Harry Sarson",
   "license": "MIT",
   "devDependencies": {
