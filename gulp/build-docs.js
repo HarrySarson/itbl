@@ -7,7 +7,7 @@ const path = require('path');
 const through2 = require('through2');
 
 const pkg = require('../package.json');
-const version = pkg.version;
+const version = 'v' + pkg.version;
 
 const config = {
   'base': {
