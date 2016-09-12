@@ -4,7 +4,7 @@ A collection of javascript utility functions designed to unlock the full potenti
 
 The libary will run in es5 environments and supports poly/ponyfilled implementations of iterators.
 
-* [**API Documentation**](blob/master/docs/readme.md)
+* [**API Documentation**](tree/master/docs)
 * [**View on npm**](https://www.npmjs.com/package/itbl)
 
 
