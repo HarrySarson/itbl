@@ -60,16 +60,21 @@ module.exports = combine;
  */
 function combine(collection, finish) {
   
-  finish = (finish === 'e' || finish === 'early')
-    ? 'early' 
-    : (finish === 'l' || finish === 'late')
-      ? 'late'
-      : (finish === 't' || finish === 'together')
-        ? 'together'
-        : null;
-        
   if( finish == null )
-    throw new Error('itbl: parameter finish to combine is not reconised');
+    finish = 'early';
+  else
+  {  
+    finish = (finish === 'e' || finish === 'early')
+      ? 'early' 
+      : (finish === 'l' || finish === 'late')
+        ? 'late'
+        : (finish === 't' || finish === 'together')
+          ? 'together'
+          : null;
+          
+    if( finish == null )
+      throw new Error('itbl: parameter finish to combine is not reconised');
+  }
 
   var create = isIterable(collection)
         ? Array

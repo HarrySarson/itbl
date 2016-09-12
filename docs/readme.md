@@ -112,7 +112,7 @@ let iterable = itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet]);
 <!-- div -->
 
 <h3 id="itblfilteriterable-predicate_identity"><code>itbl.filter(iterable, [predicate=_.identity])</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/tree/v1.1.0/itbl.js#L614 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/tree/v1.1.0/itbl.js#L619 "View in source") [&#x24C9;][1]
 
 Creates a new iterable containing values which the `predicate` returns truthy for.
 
@@ -300,7 +300,7 @@ to a string to allow polyfilled support for iterators.
 <!-- div -->
 
 <h3 id="itblmapiterable-iteratee_identity"><code>itbl.map(iterable, [iteratee=_.identity])</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/tree/v1.1.0/itbl.js#L685 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/tree/v1.1.0/itbl.js#L690 "View in source") [&#x24C9;][1]
 
 Creates a new iterable whose iterators will have values coresponding to the value
 of the Iterator of the original iterable run through `iteratee`.
@@ -355,7 +355,7 @@ Read only boolean value indicating whether es6 iterators are supported.
 <!-- div -->
 
 <h3 id="itbltoarrayiterable"><code>itbl.toArray(iterable)</code></h3>
-[&#x24C8;](https://github.com/HarrySarson/itbl/tree/v1.1.0/itbl.js#L744 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/HarrySarson/itbl/tree/v1.1.0/itbl.js#L749 "View in source") [&#x24C9;][1]
 
 Iterates over `iterable` and creates an array containing the values contained
 within iterable. Behavour is designed to replicate the `es6` syntax: `[...iterable]`.
