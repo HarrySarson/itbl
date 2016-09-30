@@ -3,7 +3,10 @@
   "version": "1.1.2",
   "description": "Utility libary for es6 iterators",
   "main": "itbl.js",
-  "scripts": {},
+  "scripts": {
+    "transpile": "babel test/test.babel.js --out-file test/test-transpiled.js",
+    "test": "babel-node test/test.babel.js"
+  },
   "keywords": [
     "util",
     "es6",
@@ -25,6 +28,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-umd": "^0.2.0",
+	"itbl": "1.1.2",
+    "qunit-extras": "^2.1.0",
     "run-sequence": "^1.2.2",
     "vinyl-file": "^2.0.0",
     "vinyl-fs": "^2.4.3"

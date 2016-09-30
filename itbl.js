@@ -1,779 +1,534 @@
-;(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(['lodash'], factory);
-  } else if (typeof exports === 'object') {
-    module.exports = factory(require('lodash'));
-  } else {
-    root.itbl = factory(root._);
-  }
-}(this, function(_) {
-'use strict'; 
 
-var isSymbol = _.isSymbol
-var isFunction = _.isFunction
-
-
-var supported = typeof Symbol !== 'undefined' && Symbol != null && isSymbol(Symbol.iterator),
-    itSymb = supported ? Symbol.iterator : null;
+;(function() {
+  'use strict';
   
-function definitions(addTo) {
- 
+  /** Do basic error checking */
+  const ERR_CHECK = true;
+  
+  /** Expose internal modules for testing */
+  const EXPOSE_INTERNAL = true;
+  
+  /** check `Symbol`'s are supported */
+  if( typeof Symbol === undefined )
+    throw new Error('es6 Symbols are required for the itbl libary');
+  
+  /** Detect free variable `global` from Node.js. */
+  const freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+  /** Detect free variable `self`. */
+  const freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+  
+  
+  /** Detect free variable `exports`. */
+  const freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+
+  /** Detect free variable `module`. */
+  const freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+
+  /** Used as a reference to the global object. */
+  const root = freeGlobal || freeSelf || Function('return this')();
+  
+  /** Used to restore the original `itbl` reference in `itbl.noConflict`. */
+  const oldItbl = root.itbl;
+  
+  /** Used to access `@@iterator` method */
+  const iteratorSymbol = Symbol.iterator;
+  
   /**
-   * Read only boolean value indicating whether es6 iterators are supported.
+   * Function that returns the first argument it recieves
+   * 
+   * @private
+   * @memberOf itbl
+   * @since 2.0.0
+   *
+   * @param {*} value Any Value.   
+   * 
+   * @returns {boolean} Returns `value`
+   * @noexcept
+   */
+  const identity = value => value;
+  
+  /**
+   * Used to bind `this` and arguments to funciton
+   * 
+   */
+  const funcBind = Function.prototype.bind;
+  
+  /**
+   * Determine if a value is a function.
+   * 
+   * @see http://stackoverflow.com/a/17108198
+   * 
+   * @private
+   * @memberOf itbl
+   * @since 2.0.0
+   *
+   * @param {*} value Value to check if function.
+   * 
+   * @returns {boolean} Weather value is function or not.
+   * @noexcept
+   */
+  const isFunction = value => typeof value === 'function';
+   
+
+  /** 
+   * Base class with prototype containing chained itbl methods.
+   * This class is returned by `itbl()` and `itbl.wrap()`.
    *
    * @static
    * @memberOf itbl
    * @since 0.1.0
-   * @property {boolean}
-   * @name nativeIterators
+   * @constructor
+   * @noexcept
    *
-   * <table>
-   *   <tr>
-   *   <td colspan="2">Property attributes of <code>nativeIterators</code></td>
-   *   </tr>
-   *   <tr> <td>Writable</td> <td>no</td> </tr> 
-   *   <tr> <td>Enumerable</td> <td>yes</td> </tr> 
-   *   <tr> <td>Configurable</td> <td>no</td> </tr> 
-   * </table>
    */
-  Object.defineProperty(addTo, 'nativeIterators', {
-    value: supported,
-    enumerable: true,
-    configurable: false,
-    writable: false
-  });
-
-
+  const Wrapper = function() {};
+  
+  
   /**
-   * Symbol or string used by libary to access iterator method, 
-   * defaults to `es6`'s `Symbol.iterator`.
-   * Can be overwritten by a symbol or by any non-null value convertable 
-   * to a string to allow polyfilled support for iterators.
+   * Checks if `value` is an iterator according to es6 iterator protocols.
+   * An object is an iterator when it implements a next() method.
+   * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator
    *
    * @static
    * @memberOf itbl
    * @since 0.1.0
-   * @property {string|Symbol}
-   * @name iteratorSymbol
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+   * @noexcept
+   * @example
    *
-   * <table>
-   *   <tr>
-   *   <td colspan="2">Property attributes of <code>iteratorSymbol</code></td>
-   *   </tr>
-   *   <tr> <td>Writable</td> <td>yes</td> </tr> 
-   *   <tr> <td>Enumerable</td> <td>yes</td> </tr> 
-   *   <tr> <td>Configurable</td> <td>no</td> </tr> 
-   * </table>
+   * function MyIterable() { }
+   * MyIterable.prototype[Symbol.iterator] = function*(){
+   *   while(true) yield 1;
+   * }
+   * 
+   * let iterableInstance = new MyIterable();
+   *
+   * itbl.isIterable(iterableInstance);
+   * // => false (this is an iterable but NOT an iterator)
+   *
+   * // generator function that is then called
+   * itbl.isIterable(iterableInstance[Symbol.iterator]());
+   * // => true (this is both an iterator and also iterable)
+   *
+   * itbl.isIterator([1, 2, 3][Symbol.iterator]());
+   * // => true
+   *
+   * for(let i of ['a'])
+   *   itbl.isIterator(i)
+   * // => false (i is equal to 'a')
    */
-  Object.defineProperty(addTo, 'iteratorSymbol', {
-    get: function() { return itSymb; },
-    set: function(v) { 
-      itSymb = isSymbol(v) 
-          ? v 
-          : v == null || !isFunction(v.toString) 
-            ? null 
-            : v + ''; 
-    }, 
-    enumerable: true,
-    configurable: false
-  });
-}
+  const isIterator = value => value != null && isFunction(value.next);
+  
 
-// add definitions to module but also export function that
-// will add definitions to other objects.
-
-definitions(definitions);
-
-
-/** 
- * Base class with prototype containing chained itbl methods.
- * This class is returned by `itbl()` and `itbl.wrap()`.
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @constructor
- *
- */
-var Wrapper = function() {};
-
-
-var bind = _.bind
-
-
-// the es6 way to implement this class probabaly uses Proxy.
-
-/**
- * Wraps an iterator, adding chainable itbl methods.
- * The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to both the 
- * iterable protocol and the iterator protocol as well as defining the `return()`
- * and `throw()` methods if (and only if) `iterator` defines them.
- *
- * **Note**: There is no error checking.
- *
- * @private
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {iterator} iterator Iterator to wrap.
- * 
- * @return {itbl.Wrapper} Wrapped iterator.
- *
- */
-function wrapIterator(iterator) {
+  /**
+   * Checks if `value` is an iterable objectaccording to es6 iterator protocols.
+   * In order to be iterable, an object must implement the @@iterator method,
+   * meaning that the object (or one of the objects up its prototype chain) 
+   * must have a property with a Symbol.iterator key which defines a function.
+   * (https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+   *
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+   * @noexcept
+   * @example
+   *
+   * 
+   * function MyIterable() { }
+   * MyIterable.prototype[Symbol.iterator] = function*(){
+   *   while(true) yield 1;
+   * }
+   * 
+   * let iterableInstance = new MyIterable();
+   *
+   * itbl.isIterable(iterableInstance);
+   * // => true
+   *
+   * // generator function that is then called
+   * itbl.isIterable(iterableInstance[Symbol.iterator]());
+   * // => true (this is both an iterator and also iterable)
+   *
+   * itbl.isIterable([1, 2, 3]);
+   * // => true
+   *
+   * itbl.isIterable({1: 1, 2: 2, 3: 3});
+   * // => false
+   */
+  const isIterable = value => value != null && isFunction(value[iteratorSymbol]);
     
-  var wrapper = new Wrapper();
-                          
-  wrapper.next = bind(iterator.next, iterator);
   
-  wrapper[definitions.iteratorSymbol] = function() { return this; }  
   
-  if( isFunction(iterator['return']) ) 
-    wrapper['return'] = bind(iterator['return'], iterator);
+  /**
+   * Wraps an iterator, adding chainable itbl methods.
+   * The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to both the 
+   * iterable protocol and the iterator protocol as well as defining the `return()`
+   * and `throw()` methods if (and only if) `iterator` defines them.
+   *
+   * Use the methods parameter to overwrite the `next`, `return`, `throw` or 
+   * `[Symbol.iterator]` methods of `iterator`, `this` is bound to `iterator`.
+   *
+   * **Note**: There is no error checking.
+   *
+   * @private
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {iterator} iterator Iterator to wrap.
+   * @param {object} [methods = {}] Methods object
+   * @param {function} [methods.next] Replacement `next` method
+   * @param {function} [methods.return] Replacement `next` method
+   * @param {function} [methods.throw] Replacement `next` method
+   * @param {function} [methods[Symbol.iterator]] Replacement `[Symbol.iterator]` method
+   * 
+   * @return {itbl.Wrapper} Wrapped iterator.
+   * @noexcept
+   *
+   */
+  const wrapIterator = function wrapIterator(iterator, methods) {
+      
+    var wrapper = new Wrapper();
+    
+    methods = methods != null 
+      ? methods
+      : {};
+                            
+    wrapper.next = funcBind.call(
+      methods.next != null
+        ? methods.next
+        : iterator.next,
+      iterator
+    );
+            
+    if( methods[iteratorSymbol] != null )
+      wrapper[iteratorSymbol] = funcBind.call(methods[iteratorSymbol],  iterator);
+    else if( iterator[iteratorSymbol] != null ) 
+      wrapper[iteratorSymbol] = funcBind.call(iterator[iteratorSymbol], iterator);
+    else
+      wrapper[iteratorSymbol] = () => wrapper;
+    
+    if( methods.return != null )
+      wrapper.return = funcBind.call(methods.return,  iterator);
+    else if( iterator.return != null ) 
+      wrapper.return = funcBind.call(iterator.return, iterator);
+      
+    if( methods.throw != null )
+      wrapper.throw = funcBind.call(methods.throw,  iterator);
+    else if( iterator.throw != null ) 
+      wrapper.throw = funcBind.call(iterator.throw, iterator);
+      
+    return wrapper;
+  }
+  
+  /**
+   * Wraps an iterable, adding chainable itbl methods.
+   * The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to the iterable protocol.
+   *
+   * The iterator returned by the `[Symbol.iterator]` method will be wrapped and so contain chainable
+   * itbl methods.
+   *
+   * Use the methods parameter to overwrite the `next`, `return`, `throw` or 
+   * `[Symbol.iterator]` methods of the iterator produced by `iterable`.
+   *
+   * **Note**: The objects returned by the `[Symbol.iterator]` method are checked to ensure that they are iterators.
+   *
+   * @private
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {iterable} iterable Iterable to wrap.
+   * @param {object} [methods = {}] Methods object
+   * @param {function} [methods.next] Replacement `next` method
+   * @param {function} [methods.return] Replacement `next` method
+   * @param {function} [methods.throw] Replacement `next` method
+   * @param {function} [methods[Symbol.iterator]] Replacement `[Symbol.iterator]` method
+   * 
+   * @return {itbl.Wrapper} Wrapped iterable.
+   * @throws Throws `Error` if the objects returned by the `[Symbol.iterator]` method are not iterators.
+   *
+   */
+  const wrapIterable = function wrapIterable(iterable, methods) {
+
+    var wrapper = new Wrapper();
+      
+    wrapper[iteratorSymbol] = function() {
+      let iter = iterable[iteratorSymbol]();
+      
+      if( ERR_CHECK && !isIterator(iter) )
+        throw new Error('itbl: `[Symbol.iterator]` method has not returned an iterator');
+    
+      return wrapIterator(iterable[iteratorSymbol](), methods);
+    };
+
+    return wrapper;
+    
+  }
+  
+  /**
+   * Wraps a generator function to produce a @link{itbl.Wrapper wrapped iterable}.
+   * 
+   * The generator function can be any function that returns an iterator, this includes functions
+   * declared `function* gen() {}`.
+   *
+   * If the function produces independant iterators each time it is called (which `function*() { ... }` does)
+   * then iterating over the created iterable wil not cause it to change, so it can be used multiple times.
+   *
+   * **Note**: The objects returned by the `generator` are checked to ensure that they are iterators.
+   *
+   *
+   * @private
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {function} generator A function that returns iterators.
+   *
+   * @returns {itbl.Wrapper} An iterable.
+   * @throws Throws `Error` if the objects returned by the `[Symbol.iterator]` method are not iterators.
+   *
+   */
+  const generateIterable = generator => wrapIterable({ [iteratorSymbol]: generator });
+
+  /**
+   * Gets iterator from `iterable`. This is equivilent to calling `iterable[Symbol.iterator]` but
+   * produces helpful error messages.
+   *
+   * If `iterable == null` then an 'empty' iterator is returned.
+   *
+   *
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {Iterable} [iterable = []] Iterable to get N iterator to.
+   *
+   * @returns {itbl.Wrapper} An iterator
+   * @throws {Error} Throws an error if `iterable` is not iterable.
+   *
+   * @example
+   *
+   * let it = itbl.getIterator([1,2,3]);
+   *
+   * it.next() // { value: 1, done: false }
+   * it.next() // { value: 2, done: false }
+   * it.next() // { value: 3, done: false }
+   * it.next() // { value: undefined, done: true }
+   *
+   */
+  const getIterator = function getIterator(iterable) {
      
-  if( isFunction(iterator['throw']) )
-    wrapper.throw = bind(iterator['throw'], iterator);
+    if( iterable === undefined )
+      return { 
+        next: function() { return { done: true }; } 
+      };
     
-  return wrapper;
-}
-
-
-// the es6 way to implement this class probabaly uses Proxy.
-
-
-/**
- * Wraps an iterable, adding chainable itbl methods.
- * The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to the iterable protocol.
- *
- * **Note**: There is no error checking.
- *
- * @private
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {iterable} iterable Iterable to wrap.
- * 
- * @return {itbl.Wrapper} Wrapped iterable.
- *
- */
-function wrapIterable(iterable) {
-
-
-  var wrapper = new Wrapper();
+    if( ERR_CHECK && !isIterable(iterable) )
+      throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method not defined).');
     
-  wrapper[definitions.iteratorSymbol] = function() {
-    return wrapIterator(iterable[definitions.iteratorSymbol]());
-  };
-
-  return wrapper;
-  
-}
-
-
-/**
- * Wraps a generator function to produce a @link{itbl.Wrapper wrapped iterable}.
- * 
- * The generator function can be any function that returns an iterator, this includes functions
- * declared `function* gen() {}`.
- *
- * If the function produces independant iterators each time it is called (which `function*() { ... }` does)
- * then iterating over the created iterable wil not cause it to change, so it can be used multiple times.
- *
- * **Note**: There is no error checking.
- *
- *
- * @private
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {function} generator A function that returns iterators.
- *
- * @returns {itbl.Wrapper} An iterable.
- *
- */
-function generateIterable(generator) {
-    
-  var itbl = {};
-  
-  itbl[definitions.iteratorSymbol] = generator;
-  
-  return wrapIterable(itbl);     
-  
-}
-
-
-/**
- * Checks if `value` is an iterable objectaccording to es6 iterator protocols.
- * In order to be iterable, an object must implement the @@iterator method,
- * meaning that the object (or one of the objects up its prototype chain) 
- * must have a property with a Symbol.iterator key which defines a function.
- * (https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified,
- *  else `false`.
- * @example
- *
- * 
- * function MyIterable() { }
- * MyIterable.prototype[Symbol.iterator] = function*(){
- *   while(true) yield 1;
- * }
- * 
- * let iterableInstance = new MyIterable();
- *
- * itbl.isIterable(iterableInstance);
- * // => true
- *
- * // generator function that is then called
- * itbl.isIterable(iterableInstance[Symbol.iterator]());
- * // => true (this is both an iterator and also iterable)
- *
- * itbl.isIterable([1, 2, 3]);
- * // => true
- *
- * itbl.isIterable({1: 1, 2: 2, 3: 3});
- * // => false
- */
-function isIterable(value) {
-    
-  return value != null && isFunction(value[definitions.iteratorSymbol]);
-  
-};
-
-
-/**
- * Checks if `value` is an iterator according to es6 iterator protocols.
- * An object is an iterator when it implements a next() method.
- * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified,
- *  else `false`.
- * @example
- *
- * function MyIterable() { }
- * MyIterable.prototype[Symbol.iterator] = function*(){
- *   while(true) yield 1;
- * }
- * 
- * let iterableInstance = new MyIterable();
- *
- * itbl.isIterable(iterableInstance);
- * // => false (this is an iterable but NOT an iterator)
- *
- * // generator function that is then called
- * itbl.isIterable(iterableInstance[Symbol.iterator]());
- * // => true (this is both an iterator and also iterable)
- *
- * itbl.isIterator([1, 2, 3][Symbol.iterator]());
- * // => true
- *
- * for(let i of ['a'])
- *   itbl.isIterator(i)
- * // => false (i is equal to 'a')
- */
-function isIterator(value) {
-  
-  return value != null && isFunction(value.next);
-    
-};
-
-
-var constant = _.constant
-
-
-/** 
- * Wraps an iterable, iterator, generator function (any function
- * that returns iterators), or a value to produce an objcet that conforms to the
- * iterable protocol (and iterator protocol if `value` is an iterator). 
- *
- * If a value is provided that is not an iterable or an iterator, or is a function that does
- * not return iterators, it (or its return value) is wrapped in an iterable so that `itbl(6)`
- * is equivilent to both `itbl(function() { return 6; })` and `itbl([6])`
- *
- * All itbl functions that take an iterable as their first parameter
- * and return an iterable are chainable and so can be called as methods of the
- * wrapped value.
- *
- * The chainable methods are:
- * 
- * `filter` and `map`.
- *
- * In custom builds, including a function in the build will attach that function
- * as a method to all wrapped values.
- *
- *
- * @static
- * @memberOf itbl
- * @alias itbl
- * @since 0.1.0
- * @param {*} value The value to wrap.
- *
- * @returns {itbl.Wrapper} An iterable which may also be an iterator.
- *
- */
-function wrap(value) {
-  
-  if( isIterator(value) )
-    return wrapIterator(value);
-  
-  // note iterators may also be iterable but they are treated as iterators
-  if( isIterable(value) )
-    return wrapIterable(value);
-  
-  if( isFunction(value) )
-    return generateIterable(function(){
+    let iterator = iterable[definitions.iteratorSymbol]();
       
-      var it = value(),
-          count = 0;
-      
-      if( isIterator(it) )
-        return it;
-      else 
-        return {
-          next: function(){ 
-            return count++
-              ? { done: true }
-              : { value: it, done: false };
-          }          
-        }
-    });
+    if( ERR_CHECK && !isIterator(iterator) )
+      throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method does not return an iterator.');
+
+    return wrapIterator(iterator);    
+    
+  }
   
-  return generateIterable(function(){
+  
+  /** 
+   * Wraps an iterable, iterator, generator function (any function
+   * that returns iterators), or a value to produce an objcet that conforms to the
+   * iterable protocol (and iterator protocol if `value` is an iterator). 
+   *
+   * If a value is provided that is not an iterable or an iterator, or is a function that does
+   * not return iterators, it (or its return value) is wrapped in an iterable so that `itbl(6)`
+   * is equivilent to both `itbl(function() { return 6; })` and `itbl([6])`
+   *
+   * All itbl functions that take an iterable as their first parameter
+   * and return an iterable are chainable and so can be called as methods of the
+   * wrapped value.
+   *
+   * The chainable methods are:
+   * 
+   * `filter` and `map`.
+   *
+   * In custom builds, including a function in the build will attach that function
+   * as a method to all wrapped values.
+   *
+   *
+   * @static
+   * @memberOf itbl
+   * @alias itbl
+   * @since 0.1.0
+   * @param {*} value The value to wrap.
+   *
+   * @returns {itbl.Wrapper} An iterable which may also be an iterator.
+   * @throws If `value` defines a `[Symbol.iterator]` method but that method does not
+   * return valid iterators then an `Error` will be thrown when the wrapped iterable
+   * is iterated over.
+   *
+   */
+  const wrap = function wrap(value) {
     
-    var count = 0;
+    if( isIterator(value) )
+      return wrapIterator(value);
     
-    return {
-      next: function(){ 
-        return count++
-          ? { done: true }
-          : { value, done: false };
-      }          
+    // note iterators may also be iterable but they are treated as iterators
+    if( isIterable(value) )
+      return wrapIterable(value);
+    
+    let result;
+    
+    if( isFunction(value) )
+    {
+      return generateIterable(function() {
+        let iter = value();
+        
+        if( isIterator(iter) )
+          return iter;
+        
+        else return [value][Symbol.iterator]();
+      });
     }
-  }); 
-}
-
-
-/**
- * Gets iterator from `iterable`. In `es6` environments using default value of `itbl.iteratorSymbol` when
- * `iterable` is a valid iterator, this is equivilent to calling `iterable[Symbol.iterator]`. This function includes
- * support for different values of `itbl.iteratorSymbol` and helpful error messages.
- *
- * If `iterable == null` then an 'done' iterator is returned.
- *
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {Iterable} [iterable = []] Iterable to get iterator to.
- *
- * @returns {itbl.Wrapper} An iterator
- * @throws {Error} Throws an error if iterators are not supported or the argument is not iterable.
- *
- * @example
- *
- * let it = itbl.getIterator([1,2,3]);
- *
- * it.next() // { value: 1, done: false }
- * it.next() // { value: 2, done: false }
- * it.next() // { value: 3, done: false }
- * it.next() // { value: undefined, done: true }
- *
- */
-function getIterator(iterable) {
-  
-  if( definitions.iteratorSymbol == null )
-    throw new Error('itbl: Iterators are natively not supported, set itbl.iteratorSymbol to use iterators');  
-         
-  if( iterable === undefined )
-    return { 
-      next: function() { return { done: true }; } 
-    };
-  
-  if( !isIterable(iterable) )
-    throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method not defined).');
-  
-  var iterator = iterable[definitions.iteratorSymbol]();
     
-  if( !isIterator(iterator) )
-    throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method does not return an iterator.');
-
-  return wrapIterator(iterator);    
+    return wrapIterable([value])
+  }
   
-}
-
-
-var mapValues = _.mapValues
-var reduce = _.reduce
-
-
-/**
- * Combines the iterables in `collection` into a single iterable containing collections
- * of values from each iterable in `collection`.
- *
- * `collection` can either be an iterable containing iterable values that will be combined
- * into an iterable containing iterables containing all the values of the iterable from `collection`
- * or an object whose own, enumerable properties are iterables to be combined into an
- * iterable containing objects whose own, enumberable properties are the same as `collection`'s
- * and the values of those properties will be the values of the iterable from `collection`.
- *
- * The value of `finish` determines when the iteration ends.
- *
- * * If `finish === 'early' or 'e'` (default) then the iteration ends as soon as the first iterator from
- * `collection` ends.
- * 
- * * If `finish === 'late' or 'l'` then the iteration continues untill all iterators from `collection` are done.
- * Values corresponding to iterators that have ended are `undefined`.
- *
- * * If `finish === 'together' or 't'` then all iterators from `collection` must finish on the same iteration or
- * else an `Error` is thrown.
- *
- * **Note**: The return value of the iterator is a collection of the of the return values the iterators
- * from `collection`. Return values corresponding to iterators that have not yet ended are `undefined`
- *
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {iterable|Object} collection Collection of iterators
- * @param {string} [finish = 'early'] Flag determining when iteration will finish.
- *
- * @returns {itbl.Wrapper} Iterable containing collection of values
- * @example
- *
- * for(let coor of itbl.combine({
- *   x: [1,2,3,4,5],
- *   y: [1,4,9,16,25]
- * })){
- *   context.lineTo(coor.x, coor.y);
- * }
- * 
- * let mySet = new Set();
- * mySet.add(1);
- * mySet.add(Math);
- *
- * let iterable = itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet]);
- * [...iterable];
- * // [['a', 'alpha', 1], ['b', 'beta', Math]]
- */
-function combine(collection, finish) {
+  /**
+   * Creates a new iterable whose iterators will have values coresponding to the value
+   * of the Iterator of the original iterable run through `iteratee`.
+   * The iteratee is invoked with only one argument (value). 
+   *
+   *
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {Iterable} iterable Iterable to map values of.
+   * @param {Function} [iteratee = _.identity] Function to run each value though.
+   *
+   * @returns {itbl.Wrapper} A new mapped iterable
+   * @throws {Error} Throws an error if `iterable` is not iterable.
+   *
+   * @example
+   *
+   * for(let coor of itbl.map([0,1,2,3,4,5], x => ({ x, y: Math.exp(x)))) {
+   *   context.lineTo(coor.x, coor.y);
+   * }
+   * 
+   * let mySet = new Set().add(1).add('a').add(NaN)
+   *
+   * [...itbl.map(mySet, value => value + 1)]
+   * // [2, 'a1', NaN]
+   *
+   * var users = [
+   *   { 'user': 'barney' },
+   *   { 'user': 'fred' }
+   * ];
+   *
+   * [...itbl.map(users, _.property('user'));
+   * // => ['barney', 'fred']
+   *
+   */
+  const map = function map(iterable, iteratee) {
+    
+    iteratee = iteratee != null 
+      ? iteratee
+      : identity;
+      
+    if( ERR_CHECK && !isIterable(iterable) )
+      throw new Error('itbl.map: `iterable` does not define the `[Symbol.iterator]` method');
+    
+    return (isIterator(iterable)
+      ? wrapIterator 
+      : wrapIterable
+    )(iterable, {
+      next() {
+        const step = this.next();
+        let mapped;
+        
+        if( !step.done )
+          mapped = iteratee(step.value);
+        
+        return {
+          value: mapped,
+          done: step.done,
+        }
+      },        
+    });
+  };
   
-  if( finish == null )
-    finish = 'early';
-  else
-  {  
-    finish = (finish === 'e' || finish === 'early')
-      ? 'early' 
-      : (finish === 'l' || finish === 'late')
-        ? 'late'
-        : (finish === 't' || finish === 'together')
-          ? 'together'
-          : null;
-          
-    if( finish == null )
-      throw new Error('itbl: parameter finish to combine is not reconised');
+  Wrapper.prototype.map = function(iteratee) {
+    return map(this, iteratee);
+  };
+   
+  
+  
+  /**
+   * Reverts the `itbl` variable to its previous value and returns a reference to
+   * the `itbl` function.
+   *
+   * @static
+   * @since 2.0.0
+   * @memberOf itbl
+   * @returns {Function} Returns the `itbl` function.
+   * @example
+   *
+   * var IterableUtil = itbl.noConflict();
+   */
+  function noConflict() {
+    if (root.itbl === this) {
+      root.itbl = oldItbl;
+    }
+    return this;
   }
 
-  var create = isIterable(collection)
-        ? Array
-        : Object,
-      
-      finishLate = (finish === 'late');
+  /*--------------------------------------------------------------------------*/
 
-
-  return generateIterable(function() {
+  // Export itbl.
     
-    // TODO slightly unhelpful error message generated
-    // also mapValues on array converts to an object, don't that that
-    // makes any difference
-    
-    var its = mapValues(collection, getIterator),
-        done = false;
-        
-    var returnValues = create(),
-        anyValues,
-        values,
-          
-        cb = finishLate
-          ? function lateCb(every, it, key) {
-        
-            if( returnValues.hasOwnProperty(key) )
-              return every;
-            
-            var step = it.next();
-            
-            if( step.done )
-            {
-              returnValues[key] = step.value;
-              return every;
-            }
-            else
-            {
-              values[key] = step.value;
-              return false;
-            }
-          }
-          : function earlyCb(some, it, key) {
-            
-            var step = it.next();
-                
-            if( step.done )
-            {
-              returnValues[key] = step.value;
-              return true;
-            }
-            else
-            {
-              anyValues = true;
-              values[key] = step.value;
-              return some;
-            }
-          };
-        
-    return {
-      next: function() {
-        if( done )
-          return { done: true }
-        
-        values = create();
-        anyValues = false;
-        
-        if( reduce(its, cb, !!finishLate) ) 
-        {
-          if( finish === 'together' && anyValues )
-            throw new Error("itbl: iterables combined with finish === 'together' have not finished together");
-          
-          done = true;
-          
-          return {
-            value: returnValues,
-            done: true
-          }
-        }
-        else
-          return {
-            value: values,
-            done: false
-          }
-      }
-    };
-  });
-  
-};
+  let itbl = wrap;
+   
+  Object.assign(itbl, {
+   
+   isIterable,
+   isIterator,
+   itbl,
+   noConflict,
+   map,
+   wrap,
+   
+ }, EXPOSE_INTERNAL
+  ? {
+    _wrapIterable: wrapIterable,
+    _wrapIterator: wrapIterator,
+    _generateIterable: generateIterable,
+    _Wrapper: Wrapper,
+  }
+  : {});
 
+  // Some AMD build optimizers, like r.js, check for condition patterns like:
+  if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+    // Expose itbl on the global object to prevent errors when itbl is
+    // loaded by a script tag in the presence of an AMD loader.
+    // See http://requirejs.org/docs/errors.html#mismatch for more details.
+    // Use `itbl.noConflict` to remove Lodash from the global object.
+    root.itbl = itbl;
 
-var parseIteratee = _.iteratee
-
-
-/**
- * Creates a new iterable containing values which the `predicate` returns truthy for. 
- *
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {Iterable} iterable Iterable to filter the values of.
- * @param {Function} [predicate = _.identity] Function to run each value though.
- *
- * @returns {itbl.Wrapper} New filtered iterable
- * @throws {Error} Throws an error if iterators are not supported or the `iterable` is not iterable.
- *
- * @example
- *
- * [...itbl.filter([0,1,2,3,4,5], val => val%2 === 0)]
- * // [0,2,4]
- * 
- * let mySet = new Set().add(1).add('a').add(NaN)
- *
- * [...itbl.filter(mySet, value => _.isFinite)]
- * // [1]
- *
- * var users = [
- *   { 'user': 'barney', 'age': 36, 'active': true },
- *   { 'user': 'fred',   'age': 40, 'active': false }
- * ];
- *
- * [...itbl.filter(users, function(o) { return !o.active; })];
- * // => objects for ['fred']
- *
- * // The `_.matches` iteratee shorthand.
- * [...itbl.filter(users, { 'age': 36, 'active': true })];
- * // => objects for ['barney']
- *
- * // The `_.matchesProperty` iteratee shorthand.
- * [...itbl.filter(users, ['active', false])];
- * // => objects for ['fred']
- *
- * // The `_.property` iteratee shorthand.
- * [...itbl.filter(users, 'active')];
- * // => objects for ['barney']
- *
- */
-function filter(iterable, predicate) {
-
-  predicate = parseIteratee(predicate);
-
-
-  return generateIterable(function() {
-    
-    var it = getIterator(iterable);
-    
-    return {
-      
-      next: function FilteredIterator() {
-        
-        var step;
-
-        while( !(step = it.next()).done && !predicate(step.value) );
-        
-        if( step.done )
-          return { done: true };
-        else
-          return { value: step.value, done: false };
-      }      
-    };
-    
-  });
-}
-
-
-Wrapper.prototype.filter = function(predicate) {
-  return filter(this, predicate);
-};
-
-
-// TODO make sure iterator is closed if mapping is interupted
-
-/**
- * Creates a new iterable whose iterators will have values coresponding to the value
- * of the Iterator of the original iterable run through `iteratee`.
- * The iteratee is invoked with only one argument (value). 
- *
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {Iterable} iterable Iterable to map values of.
- * @param {Function} [iteratee = _.identity] Function to run each value though.
- *
- * @returns {itbl.Wrapper} A new mapped iterable
- * @throws {Error} Throws an error if iterators are not supported or the `iterable` is not iterable.
- *
- * @example
- *
- * for(let coor of itbl.map([0,1,2,3,4,5], x => ({ x, y: Math.exp(x)))) {
- *   context.lineTo(coor.x, coor.y);
- * }
- * 
- * let mySet = new Set().add(1).add('a').add(NaN)
- *
- * [...itbl.map(mySet, value => value + 1)]
- * // [2, 'a1', NaN]
- *
- * var users = [
- *   { 'user': 'barney' },
- *   { 'user': 'fred' }
- * ];
- *
- * // The `_.property` iteratee shorthand.
- * [...itbl.map(users, 'user');
- * // => ['barney', 'fred']
- *
- */
-function map(iterable, iteratee) {
-  
-  iteratee = parseIteratee(iteratee);
-    
-  return generateIterable(function() {
-    
-    var it = getIterator(iterable);
-    
-    return {
-      
-      next: function MappedIterator() {
-        
-        var step = it.next();
-        
-        if( step.done )
-          return { done: true };
-        else
-          return { value: iteratee(step.value), done: false };
-      }      
-    };
-    
-  });
-}
- 
-Wrapper.prototype.map = function(iteratee) {
-  return map(this, iteratee);
-};
-
-
-/**
- * Iterates over `iterable` and creates an array containing the values contained
- * within iterable. Behavour is designed to replicate the `es6` syntax: `[...iterable]`.
- *
- * @static
- * @memberOf itbl
- * @since 0.1.0
- * @param {Iterable} iterable Values to put into array.
- *
- * @returns {array} Array containing values of `iterable`.
- * @throws {Error} Throws an error if iterators are not supported or the argument is not iterable.
- *
- * @example
- *
- * function *gen() {
- *   yield 1;
- *   yield 2; 
- *   yield 3; 
- * }
- *
- * itbl.toArray(gen());
- * // [1,2,3]
- *
- * let mySet = new Set();
- * mySet.add(1);
- * mySet.add(Math);
- *
- * itbl.toArray(mySet);
- * [1, Math];
- */
-function toArray(iterable) {
-  
-  let it = getIterator(iterable),
-      arr = [],
-      step;
-      
-  while( !(step = it.next()).done )
-    arr.push(step.value);
-  
-  return arr;
-}
-
-
-var itbl = function itbl(value) {
-  return wrap(value);
-};
-
-definitions(itbl);
-
-itbl.combine = combine;
-itbl.filter = filter;
-itbl.isIterable = isIterable;
-itbl.isIterator = isIterator;
-itbl.map = map;
-itbl.toArray = toArray;
-itbl.itbl = itbl;
-itbl.wrap = wrap;
-
-
-return itbl;
-}));
+    // Define as a module.
+    define('itbl', function() {
+      return itbl;
+    });
+  }
+  // Check for `exports` after `define` in case a build optimizer adds it.
+  else if (freeModule) {
+    // Export for Node.js.
+    freeModule.exports = itbl;
+    // Export for CommonJS support.
+    freeExports.itbl = itbl;
+  }
+  else {
+    // Export to the global object.
+    root.itbl = itbl;
+  }
+}.call(this));
