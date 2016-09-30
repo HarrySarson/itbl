@@ -164,7 +164,7 @@
   
   /**
    * Wraps an iterator, adding chainable itbl methods.
-   * The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to both the 
+   * The `itbl.Wrapper` objects returned by `_wrapIterable()` will conform to both the
    * iterable protocol and the iterator protocol as well as defining the `return()`
    * and `throw()` methods if (and only if) `iterator` defines them.
    *
@@ -188,7 +188,7 @@
    * @noexcept
    *
    */
-  const wrapIterator = function wrapIterator(iterator, methods) {
+  const _wrapIterator = function _wrapIterator(iterator, methods) {
       
     var wrapper = new Wrapper();
     
@@ -225,7 +225,7 @@
   
   /**
    * Wraps an iterable, adding chainable itbl methods.
-   * The `itbl.Wrapper` objects returned by `wrapIterable()` will conform to the iterable protocol.
+   * The `itbl.Wrapper` objects returned by `_wrapIterable()` will conform to the iterable protocol.
    *
    * The iterator returned by the `[Symbol.iterator]` method will be wrapped and so contain chainable
    * itbl methods.
@@ -250,7 +250,7 @@
    * @throws Throws `Error` if the objects returned by the `[Symbol.iterator]` method are not iterators.
    *
    */
-  const wrapIterable = function wrapIterable(iterable, methods) {
+  const _wrapIterable = function _wrapIterable(iterable, methods) {
 
     var wrapper = new Wrapper();
       
@@ -260,7 +260,7 @@
       if( ARGS_CHECK && !isIterator(iter) )
         throw new Error('itbl: `[Symbol.iterator]` method has not returned an iterator');
     
-      return wrapIterator(iterable[iteratorSymbol](), methods);
+      return _wrapIterator(iterable[iteratorSymbol](), methods);
     };
 
     return wrapper;
@@ -289,7 +289,7 @@
    * @throws Throws `Error` if the objects returned by the `[Symbol.iterator]` method are not iterators.
    *
    */
-  const generateIterable = generator => wrapIterable({ [iteratorSymbol]: generator });
+  const _generateIterable = generator => _wrapIterable({ [iteratorSymbol]: generator });
 
   /**
    * Gets iterator from `iterable`. This is equivilent to calling `iterable[Symbol.iterator]` but
@@ -331,7 +331,7 @@
     if( ARGS_CHECK && !isIterator(iterator) )
       throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method does not return an iterator.');
 
-    return wrapIterator(iterator);    
+    return _wrapIterator(iterator);
     
   }
   
@@ -372,17 +372,17 @@
   const wrap = function wrap(value) {
     
     if( isIterator(value) )
-      return wrapIterator(value);
+      return _wrapIterator(value);
     
     // note iterators may also be iterable but they are treated as iterators
     if( isIterable(value) )
-      return wrapIterable(value);
+      return _wrapIterable(value);
     
     let result;
     
     if( isFunction(value) )
     {
-      return generateIterable(function() {
+      return _generateIterable(function() {
         let iter = value();
         
         if( isIterator(iter) )
@@ -392,7 +392,7 @@
       });
     }
     
-    return wrapIterable([value])
+    return _wrapIterable([value])
   }
   
   /**
@@ -440,8 +440,8 @@
       throw new Error('itbl.map: `iterable` does not define the `[Symbol.iterator]` method');
     
     return (isIterator(iterable)
-      ? wrapIterator 
-      : wrapIterable
+      ? _wrapIterator
+      : _wrapIterable
     )(iterable, {
       next() {
         const step = this.next();
@@ -500,9 +500,9 @@
    
  }, EXPOSE_INTERNAL
   ? {
-    _wrapIterable: wrapIterable,
-    _wrapIterator: wrapIterator,
-    _generateIterable: generateIterable,
+    _wrapIterable: _wrapIterable,
+    _wrapIterator: _wrapIterator,
+    __generateIterable: _generateIterable,
     _Wrapper: Wrapper,
   }
   : {});
