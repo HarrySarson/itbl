@@ -3,7 +3,7 @@
   'use strict';
   
   /** Do basic error checking */
-  const ERR_CHECK = true;
+  const ARGS_CHECK = true;
   
   /** Expose internal modules for testing */
   const EXPOSE_INTERNAL = true;
@@ -257,7 +257,7 @@
     wrapper[iteratorSymbol] = function() {
       let iter = iterable[iteratorSymbol]();
       
-      if( ERR_CHECK && !isIterator(iter) )
+      if( ARGS_CHECK && !isIterator(iter) )
         throw new Error('itbl: `[Symbol.iterator]` method has not returned an iterator');
     
       return wrapIterator(iterable[iteratorSymbol](), methods);
@@ -295,7 +295,7 @@
    * Gets iterator from `iterable`. This is equivilent to calling `iterable[Symbol.iterator]` but
    * produces helpful error messages.
    *
-   * If `iterable == null` then an 'empty' iterator is returned.
+   * If `iterable` is omitted then an 'empty' iterator is returned.
    *
    *
    * @static
@@ -323,12 +323,12 @@
         next: function() { return { done: true }; } 
       };
     
-    if( ERR_CHECK && !isIterable(iterable) )
+    if( ARGS_CHECK && !isIterable(iterable) )
       throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method not defined).');
     
-    let iterator = iterable[definitions.iteratorSymbol]();
+    let iterator = iterable[iteratorSymbol]();
       
-    if( ERR_CHECK && !isIterator(iterator) )
+    if( ARGS_CHECK && !isIterator(iterator) )
       throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method does not return an iterator.');
 
     return wrapIterator(iterator);    
@@ -343,7 +343,7 @@
    *
    * If a value is provided that is not an iterable or an iterator, or is a function that does
    * not return iterators, it (or its return value) is wrapped in an iterable so that `itbl(6)`
-   * is equivilent to both `itbl(function() { return 6; })` and `itbl([6])`
+   * is equivalent to both `itbl(function() { return 6; })` and `itbl([6])`
    *
    * All itbl functions that take an iterable as their first parameter
    * and return an iterable are chainable and so can be called as methods of the
@@ -436,7 +436,7 @@
       ? iteratee
       : identity;
       
-    if( ERR_CHECK && !isIterable(iterable) )
+    if( ARGS_CHECK && !isIterable(iterable) )
       throw new Error('itbl.map: `iterable` does not define the `[Symbol.iterator]` method');
     
     return (isIterator(iterable)

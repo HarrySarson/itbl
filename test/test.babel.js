@@ -46,7 +46,7 @@
       console.log('Error: The stable itbl dev dependency should be at least a version behind master branch.');
       throw e;
     }
-    /* TODO add this in when stableItbl has noConlict method */ // stableItbl = stableItbl.noConflict();
+    /* TODO add this in when stableItbl has noConflict method */ // stableItbl = stableItbl.noConflict();
   }
 
   /** Sample iterable values */
@@ -95,7 +95,7 @@
 
   QUnit.module('isType checks');
 
-  QUnit.test('isIterable should reconise built in iterables and generator objects', assert => {
+  QUnit.test('isIterable should recognise built in iterables and generator objects', assert => {
     assert.expect(1);
 
     const expected = iterables.map(iterable => true);
@@ -128,7 +128,7 @@
 
   /*--------------------------------------------------------------------------*/
 
-  QUnit.module('wrapper checks');
+  QUnit.module('internal wrapper checks');
 
   QUnit.test('wrapIterable produces an iterable instance of itbl._Wrapper', assert => {
 
@@ -233,6 +233,23 @@
     
   });
 
+
+  QUnit.test('generate produces an iterable instance of itbl._Wrapper', assert => {
+
+    assert.expect(3);
+
+    const sym = Symbol();
+
+    const gen = function* () { yield sym };
+
+    const anIterable = testItbl._generateIterable(gen);
+
+    console.log(anIterable);
+
+    assert.ok(stableItbl.isIterable(anIterable), 'iterable');
+    assert.strictEqual(anIterable[Symbol.iterator]().next().value, sym, '[Symbol.iterator] method is the one provided to generateIterable');
+    assert.ok(anIterable instanceof testItbl._Wrapper, 'instanceof wrapper');
+  });
 
 
 

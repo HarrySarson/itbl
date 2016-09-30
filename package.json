@@ -33,16 +33,5 @@
     "run-sequence": "^1.2.2",
     "vinyl-file": "^2.0.0",
     "vinyl-fs": "^2.4.3"
-  },
-  "dependencies": {
-    "lodash": "^4.15.0"
-  },
-  "babel": {
-    "presets": [
-      "latest"
-    ],
-    "plugins": [
-      "transform-runtime"
-    ]
   }
 }
