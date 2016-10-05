@@ -396,6 +396,10 @@
    * itbl([6][Symbol.iterator]());
    * ```
    *
+   * As `value` will be invoked if it is a function, if an iterable containing a
+   * function is required then the function should be explicitly wrapped in an iterable
+   * (e.g. `itbl([function() {...}])`).
+   *
    * All itbl functions that take an iterable as their first parameter
    * and return an iterable are chainable and so can be called as methods of the
    * wrapped value.
@@ -425,7 +429,45 @@
    * return valid iterators then an `Error` will be thrown when the wrapped iterable
    * is iterated over.
    *
-   * TODO put note about differency between `itbl([function() {...}])` and `itbl(function() {...})`.
+   * @example
+   * let students = [
+   *   {
+   *     name: 'Martin Smith',
+   *     subject: 'Maths',
+   *   },
+   *   {
+   *     name: 'John Arthur',
+   *     subject: 'English',
+   *   },
+   *   {
+   *     name: 'Rachel Richardson',
+   *     subject: 'Maths',
+   *   },
+   * ];
+   *
+   * // get the name of all maths students
+   * let mathematicians = itbl(students)
+   *  .filter(_.matchesProperty('subject', 'Maths'))
+   *  .map(_.property('name'));
+   *
+   * [...mathematicians]
+   * // -> ['Martin Smith', 'Rachel Richardson']
+   *
+   * let arr = [1, 7, 8, 9];
+   *
+   * let arrayReverse = function arrayReverse(array) {
+   *   return itbl(function* () {
+   *     let i = array.length-1;
+   *     while(i >= 0) {
+   *       yield array[i];
+   *       i--;
+   *     }
+   *   });
+   * };
+   *
+   * [...arrayReverse(arr)];
+   * // -> [9, 8, 7, 1]
+   *
    */
   const wrap = function wrap(value) {
 
@@ -527,8 +569,6 @@
   _Wrapper.prototype.map = function(iteratee) {
     return map(this, iteratee);
   };
-
-
 
   /**
    * Creates a new iterable containing values which the `predicate` returns truthy for.
