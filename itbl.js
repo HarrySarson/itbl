@@ -9,7 +9,7 @@
   const EXPOSE_INTERNAL = true;
 
   /** check `Symbol`'s are supported */
-  if( typeof Symbol === undefined )
+  if( typeof Symbol === `undefined` )
     throw new Error('es6 Symbols are required for the itbl libary');
 
   /** Detect free variable `global` from Node.js. */
@@ -204,8 +204,7 @@
    * @static
    * @memberOf itbl
    * @since 0.1.0
-   * @param {iterator} iterator Iterator to wrap.
-   * @param {object} [methods = {}] Methods object
+   * @param {Iterator} iterator Iterator to wrap.
    * @param {function} [methods.next] Replacement `next` method
    * @param {function} [methods.return] Replacement `next` method
    * @param {function} [methods.throw] Replacement `next` method
@@ -266,8 +265,7 @@
    * @static
    * @memberOf itbl
    * @since 0.1.0
-   * @param {iterable} iterable Iterable to wrap.
-   * @param {object} [methods = {}] Methods object
+   * @param {Iterable} iterable Iterable to wrap.
    * @param {function} [methods.next] Replacement `next` method
    * @param {function} [methods.return] Replacement `next` method
    * @param {function} [methods.throw] Replacement `next` method
@@ -300,7 +298,7 @@
    * The generator function can be any function that returns an iterator, this includes functions
    * declared `function* gen() {}`.
    *
-   * If the function produces independant iterators each time it is called (which `function*() { ... }` does)
+   * If the function produces independent iterators each time it is called (which `function*() { ... }` does)
    * then iterating over the created iterable wil not cause it to change, so it can be used multiple times.
    *
    * **Note**: The objects returned by the `generator` are checked to ensure that they are iterators and
@@ -321,7 +319,7 @@
 
 
   /**
-   * Gets iterator from `iterable`. This is equivilent to calling `iterable[Symbol.iterator]` but
+   * Gets iterator from `iterable`. This is equivalent to calling `iterable[Symbol.iterator]` but
    * produces helpful error messages.
    *
    * If `iterable` is omitted then an 'empty' iterator is returned.
@@ -645,7 +643,7 @@
    * @static
    * @since 2.0.0
    * @memberOf itbl
-   * @returns {Function} Returns the `itbl` function.
+   * @returns {itbl} Returns the `itbl` function.
    * @example
    *
    * var IterableUtil = itbl.noConflict();
