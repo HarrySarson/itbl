@@ -248,7 +248,7 @@
       wrapper.throw = funcBind.call(iterator.throw, iterator);
 
     return wrapper;
-  }
+  };
 
   /**
    * Wraps an iterable, adding chainable itbl methods.
@@ -292,7 +292,7 @@
 
     return wrapper;
 
-  }
+  };
 
   /**
    * Wraps a generator function to produce a @link{itbl wrapped iterable}.
@@ -362,7 +362,7 @@
 
     return _wrapIterator(iterator);
 
-  }
+  };
 
 
   /**
@@ -481,7 +481,6 @@
     if( isIterable(value) )
       return _wrapIterable(value);
 
-    let result;
 
     if( isFunction(value) )
     {
