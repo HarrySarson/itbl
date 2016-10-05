@@ -28,10 +28,14 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-umd": "^0.2.0",
-	"itbl": "1.1.2",
+    "itbl": "1.1.2",
+    "lodash": "^4.16.3",
     "qunit-extras": "^2.1.0",
     "run-sequence": "^1.2.2",
     "vinyl-file": "^2.0.0",
     "vinyl-fs": "^2.4.3"
+  },
+  "dependencies": {
+    "system": "^1.0.6"
   }
 }
