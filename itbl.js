@@ -329,7 +329,9 @@
    * @static
    * @memberOf itbl
    * @since 0.1.0
-   * @param {Iterable} [iterable = []] Iterable to get N iterator to.
+   * @param {Iterable} iterable Iterable to get N iterator to.
+   * @param {String} funcName Name of function to blame error on.
+   * @param {String} iterableName Name of `iterable` to include in error message;
    *
    * @returns {itbl} An iterator
    * @throws {Error} Throws an error if `iterable` is not iterable.
@@ -344,20 +346,15 @@
    * it.next() // { value: undefined, done: true }
    *
    */
-  const _getIterator = function _getIterator(iterable) {
-
-    if( iterable === undefined )
-      return {
-        next: function() { return { done: true }; }
-      };
+  const _getIterator = function _getIterator(iterable, funcName, iterableName) {
 
     if( ARGS_CHECK && !isIterable(iterable) )
-      throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method not defined).');
+      throw new Error(`\`itbl.${funcName}()\`: ${iterableName} is not iterable as the [Symbol.iterator] method not defined).`);
 
     let iterator = iterable[iteratorSymbol]();
 
     if( ARGS_CHECK && !isIterator(iterator) )
-      throw new Error('itbl: argument `iterable` is not iterable as the [Symbol.iterator] method does not return an iterator.');
+      throw new Error(`itbl: ${iterableName} is not iterable as the [Symbol.iterator] method does not return an iterator.`);
 
     return _wrapIterator(iterator);
 
