@@ -103,6 +103,7 @@
    * This class is returned by `itbl()` and `itbl.wrap()`.
    *
    * @static
+   * @extends Iterable
    * @memberOf itbl
    * @since 0.1.0
    * @constructor
