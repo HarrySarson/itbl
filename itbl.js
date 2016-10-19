@@ -95,7 +95,7 @@
    * @returns {boolean} Weather value is function or not.
    * @noexcept
    */
-  const isFunction = value => typeof value === 'function';
+  const _isFunction = value => typeof value === 'function';
 
 
   /**
@@ -146,7 +146,7 @@
    *   itbl.isIterator(i)
    * // => false (i is equal to 'a')
    */
-  const isIterator = value => value != null && isFunction(value.next);
+  const isIterator = value => value != null && _isFunction(value.next);
 
 
   /**
@@ -185,7 +185,7 @@
    * itbl.isIterable({1: 1, 2: 2, 3: 3});
    * // => false
    */
-  const isIterable = value => value != null && isFunction(value[iteratorSymbol]);
+  const isIterable = value => value != null && _isFunction(value[iteratorSymbol]);
 
 
 
@@ -480,7 +480,7 @@
       return _wrapIterable(value);
 
 
-    if( isFunction(value) )
+    if( _isFunction(value) )
     {
       return _generateIterable(function() {
         let result = value();
