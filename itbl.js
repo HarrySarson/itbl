@@ -700,6 +700,218 @@
     return filter(this, predicate);
   };
 
+  /**
+   * Combines the iterables in `iterable` into a single iterable containing iterables
+   * of values from each iterable in `iterable`.
+   *
+   * ** `iterable` is not checked to see if it is actually an iterable. **
+   *
+   * @private
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {Iterable} iterable Collection of iterators
+   *
+   * @returns {itbl} Iterable containing collection of values
+   * @throws {Error} Throws an error if the values of `iterable` are not iterable.
+   *
+   */
+  function _iterableCombine(iterable) {
+    let n = 0;
+
+    let iterators = itbl.map(iterable, iterableValue =>
+      _getIterator(iterableValue, 'combine', `${++n}th value of \`collection\``)
+    );
+
+    let returnValues = [];
+
+    return function() {
+
+      let values = [],
+
+          anyDone = false,
+          allDone = true,
+          i = 0;
+
+      for( let step of iterators.map(iterator => iterator.next()) ) {
+
+        returnValues[i] = step.done ? step.value : returnValues[i];
+
+        values.push(     !step.done ? step.value : undefined    );
+
+        anyDone = anyDone || step.done;
+        allDone = allDone && step.done;
+
+
+        // TODO don't like having index variable in for-of loop
+        ++i;
+      }
+
+      return { values, returnValues, anyDone, allDone };
+    };
+  }
+
+
+  /**
+   * Combines all `object`'s own enumerable values (which must be iterators) into a single iterable containing objects
+   * containing values from each iterable in `object`.
+   *
+   *
+   *
+   * @private
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {Object} object Collection of iterators
+   *
+   * @returns {itbl} Iterable containing collection of values.
+   * @throws {Error} Throws an error if any own enumerable values of `object` are not enumerable.
+   *
+   */
+  function _objectCombine(object) {
+
+    let iterators = {};
+
+
+    for( let key of Object.keys(object) ) {
+      iterators[key] = _getIterator(object[key], 'combine', `\`collection.${key}\` is not an iterator`);
+    }
+    let returnValues = {};
+
+    return function() {
+
+      let values = {},
+
+          anyDone = false,
+          allDone = true;
+
+      for( let key of Object.keys(iterators) )
+      {
+        let step = iterators[key].next;
+
+        returnValues[key] =  step.done ? step.value : returnValues[key];
+
+        values      [key] = !step.done ? step.value : undefined;
+
+        anyDone = anyDone || step.done;
+        allDone = allDone && step.done;
+
+      }
+
+      return { values, returnValues, anyDone, allDone };
+    };
+  }
+
+  /**
+   * Combines the iterables in `collection` into a single iterable containing collections
+   * of values from each iterable in `collection`.
+   *
+   * `collection` can either be an Iterable or an object containing Iterables which
+   * will be combined. The first value in the combined Iterable will be an Iterable or
+   * an object containing the first values of the Iterables in `collection`, the second
+   * value containing the second values of the Iterables in `collection` and so on.
+   *
+   * The value of `finish` determines when the iteration ends.
+   *
+   * * If `finish === 'early' or 'e'` (default) then the iteration ends as soon as the first iterator from
+   * `collection` ends.
+   *
+   * * If `finish === 'late' or 'l'` then the iteration continues untill all iterators from `collection` are done.
+   * Values corresponding to iterators that have ended are `undefined`.
+   *
+   * * If `finish === 'together' or 't'` then all iterators from `collection` must finish on the same iteration or
+   * else an `Error` is thrown.
+   *
+   * **Note**: The return value of the iterator is a collection of the of the return values the iterators
+   * from `collection`. Return values corresponding to iterators that have not yet ended are `undefined`
+   *
+   * TODO potential infinite loop if an iterator changes it's mind about whether it is done or not
+   *
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {Iterable|Object} collection Collection of iterators
+   * @param {string} [finish = 'early'] Flag determining when iteration will finish.
+   *
+   * @returns {itbl} Iterable containing collection of values
+   * @example
+   *
+   * let mySet = new Set();
+   * mySet.add(1);
+   * mySet.add(Math);
+   *
+   * [...itbl.combine([['a','b','c'], mySet, ['alpha','beta', 'gamma']])];
+   * // -> [['a', 1, 'alpha'], ['b', Math, 'beta']]
+   *
+   * // with `finish === late`
+   * [...itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet], 'late')];
+   * // [['a', 1, 'alpha'], ['b', Math, 'beta'], ['c', undefined, 'gamma']]
+   *
+   *
+   * for(let coor of itbl.combine({
+   *   x: [1,2,3,4,5],
+   *   y: [1,4,9,16,25],
+   * })){
+   *   context.lineTo(coor.x, coor.y);
+   * }
+   */
+  const combine = function combine(collection, finish) {
+
+    let finishLate = false,
+        finishTogether = false;
+
+    switch(finish) {
+      case undefined:
+      case null:
+      case 'e':
+      case 'early':
+        break;
+      case 'l':
+      case 'late':
+        finishLate = true;
+        break;
+      case 't':
+      case 'together':
+        finishTogether = true;
+        break;
+      default:
+        throw new Error('`itbl.combine()`: `finish` is not recognised');
+    }
+
+    let combiningFunction = isIterable(collection)
+        ? _iterableCombine
+        : _objectCombine;
+
+    return _generateIterable(function() {
+
+      let rawCombined = combiningFunction(collection);
+
+      return {
+        next: function() {
+
+          let { values, returnValues, anyDone, allDone } = rawCombined();
+
+
+          if( (!finishLate && anyDone) || allDone )
+          {
+            if( finishTogether && !allDone )
+              throw new Error("`itbl.combine()`: iterables combined with `finish === 'together'` have not finished together");
+
+            return {
+              value: returnValues,
+              done: true,
+            };
+          }
+          else
+            return {
+              value: values,
+              done: false,
+            };
+        },
+      };
+    });
+
+  };
 
   /**
    * Reverts the `itbl` variable to its previous value and returns a reference to
@@ -727,13 +939,14 @@
   itbl.prototype.constructor = itbl;
 
   Object.assign(itbl, {
-   filter,
-   isIterable,
-   isIterator,
-   itbl,
-   noConflict,
-   map,
-   wrap,
+    combine,
+    filter,
+    isIterable,
+    isIterator,
+    itbl,
+    noConflict,
+    map,
+    wrap,
 
  }, EXPOSE_INTERNAL
   ? {
