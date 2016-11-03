@@ -97,6 +97,9 @@
    */
   const _isFunction = value => typeof value === 'function';
 
+  /**
+   * @typedef {{ value: *, done: boolean }} Step
+   */
 
   /**
    * Base class with prototype containing chained itbl methods.
@@ -111,6 +114,70 @@
    *
    */
   const _Wrapper = function() {};
+
+  /**
+   * @name [Symbol.iterator]
+   *
+   * Get an iterator to the wrapped iterable.
+   *
+   * @memberof itbl
+   * @since 2.0.0
+   * @returns {itbl} Returns a wrapped iterator.
+   *
+   * @throws Throws if the wrapped value is an iterator or an iterable whose [Symbol.iterator]
+   * method throws.
+   */
+
+  /**
+   * @name next
+   *
+   * Get the next value of this iterator
+   * 
+   * ** This method is only defined if the wrapped value is an iterator **
+   *
+   * @memberof itbl
+   * @since 2.0.0
+   * @returns {Step} Returns the next iterator value.
+   * @throws Throws if the wrapped iterator's next method throws.
+   *
+   */
+
+  /**
+   * @name return
+   *
+   * Returns given value and finishes the iterator.
+   *
+   * ** This method is only defined if the wrapped value is defines a return method  **
+   *
+   * @memberof itbl
+   * @since 2.0.0
+   *
+   * @param {*} value The value to return
+   *
+   * @returns {Step} Returns a `{@link Step}` with a value of `value`.
+   * @throws Throws if the wrapped iterator's return method throws.
+   *
+   */
+
+  /**
+   * @name throw
+   *
+   * The throw() method resumes the execution of a generator by throwing an error into it and returns an
+   * object with two properties done and value.
+   *
+   * ** This method is only defined if the wrapped value is an iterator **
+   *
+   * @memberof itbl
+   * @since 2.0.0
+   *
+   * @param {*} exception The exception to throw. For debugging purposes, it is useful to make it an `instanceof
+   * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error Error}`.
+   *
+   * @returns {Step} Returns the next iterator value.
+   * @throws Throws if the wrapped iterator's return method throws, for a generator function this happens if the
+   * yield expression is not contained within a try-catch block.
+   *
+   */
 
 
   /**
@@ -151,7 +218,7 @@
 
 
   /**
-   * Checks if `value` is an iterable objectaccording to es6 iterator protocols.
+   * Checks if `value` is an iterable object according to es6 iterator protocols.
    * In order to be iterable, an object must implement the @@iterator method,
    * meaning that the object (or one of the objects up its prototype chain)
    * must have a property with a Symbol.iterator key which defines a function.
@@ -325,7 +392,7 @@
    *
    * If `iterable` is omitted then an 'empty' iterator is returned.
    *
-   *
+   * @private
    * @static
    * @memberOf itbl
    * @since 0.1.0
