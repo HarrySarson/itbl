@@ -454,7 +454,7 @@
   });
 
   QUnit.test('`itbl(function() { return iterator })` should return an iterable that produces `iterator`\'s', assert => {
-    assert.expect(3);
+    assert.expect(4);
 
     const symb = Symbol('aSymbol');
     const anIterable = testItbl(function () {

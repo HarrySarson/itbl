@@ -4,8 +4,8 @@
   "description": "Utility libary for es6 iterators",
   "main": "itbl.js",
   "scripts": {
-    "transpile": "babel test/test.babel.js --out-file test/test-transpiled.js",
-    "test": "babel-node test/test.babel.js"
+    "test": "babel-node test/test.babel.js",
+    "test:compiled": "node test/test.babel-compiled.js"
   },
   "keywords": [
     "util",
