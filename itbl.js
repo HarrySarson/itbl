@@ -787,7 +787,7 @@
 
       for( let key of Object.keys(iterators) )
       {
-        let step = iterators[key].next;
+        let step = iterators[key].next();
 
         returnValues[key] =  step.done ? step.value : returnValues[key];
 
