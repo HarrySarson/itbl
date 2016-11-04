@@ -719,9 +719,9 @@
   function _iterableCombine(iterable) {
     let n = 0;
 
-    let iterators = itbl.map(iterable, iterableValue =>
+    let iterators = [...itbl.map(iterable, iterableValue =>
       _getIterator(iterableValue, 'combine', `${++n}th value of \`collection\``)
-    );
+    )];
 
     let returnValues = [];
 
