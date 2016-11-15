@@ -360,6 +360,109 @@
     assert.deepEqual(iterables.map(iterable => [...testItbl.filter(iterable, x => x%2 === 1)]), iterables.map(iterable => [...stableItbl.filter(iterable, x => x%2 === 1)]));
   });
 
+  /*--------------------------------------------------------------------------*/
+
+  QUnit.module('iterable combine');
+
+  QUnit.test('`itbl.combine(iterableOfIterables)` creates an iterableOfIterables', assert => {
+
+    assert.expect(10);
+
+    const arr = [[1, 2, 3], [4, 5]];
+
+    const togetherArr = [[1, 2], [4, 5]];
+
+    const early = [[1, 4], [2, 5]];
+    const late = [[1, 4], [2, 5], [3, undefined]];
+
+    assert.deepEqual([...testItbl.combine(arr)], early , 'default finish');
+    assert.deepEqual([...testItbl.combine(arr, 'e')], early, "`finish = 'e'`");
+
+    assert.deepEqual([...testItbl.combine(arr, 'early')], early, "`finish = 'early'`");
+    assert.deepEqual([...testItbl.combine(arr, 'l')], late, "`finish = 'l'`");
+    assert.deepEqual([...testItbl.combine(arr, 'late')], late, "`finish = 'late'`");
+
+    // should throw
+    assert.throws   (() => [...testItbl.combine(arr, 't')], Error, "`finish = 't'` - should throw");
+    assert.throws   (() => [...testItbl.combine(arr, 'together')], Error, "`finish = 'together'` - should throw");
+    // should not throw
+    assert.deepEqual([...testItbl.combine(togetherArr)], early,  "`finish = 't'`");
+    assert.deepEqual([...testItbl.combine(togetherArr)], early,  "`finish = together`");
+
+    assert.throws   (_.partial(testItbl.combine, arr, false), Error, "invalid `finish` rejected");
+  });
+
+  QUnit.test('`itbl.combine(objectOfIterables)` creates an iterableOfobjects', assert => {
+
+    assert.expect(10);
+
+    const obj = { x: [1, 2, 3], y: [3, 4] };
+    const togetherObj = { x: [1, 2], y: [3, 4] };
+
+    const early = [
+      { x: 1, y: 3 },
+      { x: 2, y: 4 },
+    ];
+    const late = [
+      { x: 1, y: 3 },
+      { x: 2, y: 4 },
+      { x: 3, y: undefined },
+    ];
+
+
+    assert.deepEqual([...testItbl.combine(obj)], early , 'default finish');
+    assert.deepEqual([...testItbl.combine(obj, 'e')], early, "`finish = 'e'`");
+    assert.deepEqual([...testItbl.combine(obj, 'early')], early, "`finish = 'early'`");
+    assert.deepEqual([...testItbl.combine(obj, 'l')], late, "`finish = 'l'`");
+    assert.deepEqual([...testItbl.combine(obj, 'late')], late, "`finish = 'late'`");
+
+    // should throw
+    assert.throws   (() => [...testItbl.combine(obj, 't')], Error, "`finish = 't'` - should throw");
+    assert.throws   (() => [...testItbl.combine(obj, 'together')], Error, "`finish = 'together'` - should throw");
+    // should not throw
+    assert.deepEqual([...testItbl.combine(togetherObj)], early,  "`finish = 't'`");
+    assert.deepEqual([...testItbl.combine(togetherObj)], early,  "`finish = together`");
+
+    assert.throws   (_.partial(testItbl.combine, obj, false), Error, "invalid `finish` rejected");
+  });
+
+  QUnit.test('`itbl.combine()` returns an iterable instance of `itbl`', assert => {
+
+    assert.expect(3);
+
+    let comb = testItbl.combine({ x: [1, 2, 3], y: [3, 4] });
+
+    assert.ok(stableItbl.isIterable(comb), 'isIterable');
+    assert.ok(comb instanceof testItbl._Wrapper, 'instanceof');
+    assert.notOk(stableItbl.isIterator(comb), 'not itIterable');
+  });
+
+  QUnit.test('`itbl.combine()` returns an iterable that can be used multiple times', assert => {
+
+    assert.expect(2);
+
+    let n = 3;
+
+    let combObj = testItbl.combine({ x: [1, 2, 3], y: [3, 4] });
+    let combArr = testItbl.combine([ [1, 2, 3], [3, 4] ]);
+
+    let objs = _.times(n, () => [...combObj]);
+    let arrs = _.times(n, () => [...combArr]);
+
+    let expectedObjs = _.times(n, () => [
+      { x: 1, y: 3 },
+      { x: 2, y: 4 },
+    ]);
+
+    let expectedArr = _.times(n, () => [
+      [1, 3],
+      [2, 4],
+    ]);
+
+    assert.deepEqual(objs, expectedObjs, 'collection is an object');
+    assert.deepEqual(arrs, expectedArr, 'collection is an iterable');
+  });
+
 
 
   /*--------------------------------------------------------------------------*/
