@@ -825,7 +825,8 @@
    * **Note**: The return value of the iterator is a collection of the of the return values the iterators
    * from `collection`. Return values corresponding to iterators that have not yet ended are `undefined`
    *
-   * TODO potential infinite loop if an iterator changes it's mind about whether it is done or not
+   * `combine` is particularly powerful when used with
+   * [es6 destructuring assignment](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment).
    *
    * @static
    * @memberOf itbl
@@ -847,16 +848,23 @@
    * [...itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet], 'late')];
    * // [['a', 1, 'alpha'], ['b', Math, 'beta'], ['c', undefined, 'gamma']]
    *
-   *
-   * for(let coor of itbl.combine({
+   * let coordinates = itbl.combine({
    *   x: [1,2,3,4,5],
    *   y: [1,4,9,16,25],
-   * })){
+   * });
+   *
+   * for(let coor of coordinates) {
    *   context.lineTo(coor.x, coor.y);
    * }
+   *
+   * // more concise syntax using object destructuring
+   * for(let {x, y} of coordinates) {
+   *   context.lineTo(x,y);
+   * }
+   *
    */
   const combine = function combine(collection, finish) {
-
+    // TODO potential infinite loop if an iterator changes it's mind about whether it is done or not
     let finishLate = false,
         finishTogether = false;
 
