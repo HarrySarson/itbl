@@ -9,15 +9,15 @@
   const EXPOSE_INTERNAL = true;
 
   /** check `Symbol`'s are supported */
-  if( typeof Symbol === `undefined` )
+  if (typeof Symbol === `undefined`) {
     throw new Error('es6 Symbols are required for the itbl libary');
+  }
 
   /** Detect free variable `global` from Node.js. */
   const freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 
   /** Detect free variable `self`. */
   const freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
 
   /** Detect free variable `exports`. */
   const freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -47,33 +47,6 @@
    * @noexcept
    */
   const identity = value => value;
-
-  /**
-   * Creates an iterable containing only `value`.
-   *
-   * @private
-   * @memberOf itbl
-   * @since 2.0.0
-   *
-   * @param {*} value Any Value.
-   *
-   * @returns {itbl} Returns an wrapped iterator containing only `value`.
-   * @noexcept
-   */
-  const singleIterable = value => _wrapIterable([value]);
-  /**
-   * Creates an iterator containing only `value`.
-   *
-   * @private
-   * @memberOf itbl
-   * @since 2.0.0
-   *
-   * @param {*} value Any Value.
-   *
-   * @returns {itbl} Returns an wrapped iterator containing only `value`.
-   * @noexcept
-   */
-  const singleIterator = value => _wrapIterator([value][iteratorSymbol]());
 
   /**
    * Used to bind `this` and arguments to funciton
@@ -132,7 +105,7 @@
    * @name next
    *
    * Get the next value of this iterator
-   * 
+   *
    * ** This method is only defined if the wrapped value is an iterator **
    *
    * @memberof itbl
@@ -174,11 +147,10 @@
    * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error Error}`.
    *
    * @returns {Step} Returns the next iterator value.
-   * @throws Throws if the wrapped iterator's return method throws, for a generator function this happens if the
+   * @throw Throws if the wrapped iterator's return method throws, for a generator function this happens if the
    * yield expression is not contained within a try-catch block.
    *
    */
-
 
   /**
    * Checks if `value` is an iterator according to es6 iterator protocols.
@@ -215,7 +187,6 @@
    * // => false (i is equal to 'a')
    */
   const isIterator = value => value != null && _isFunction(value.next);
-
 
   /**
    * Checks if `value` is an iterable object according to es6 iterator protocols.
@@ -255,8 +226,6 @@
    */
   const isIterable = value => value != null && _isFunction(value[iteratorSymbol]);
 
-
-
   /**
    * Wraps an iterator, adding chainable itbl methods.
    * The `itbl` objects returned by `_wrapIterable()` will conform to both the
@@ -295,24 +264,29 @@
         ? methods.next
         : iterator.next,
       iterator
-    );
+   );
 
-    if( methods[iteratorSymbol] != null )
-      wrapper[iteratorSymbol] = funcBind.call(methods[iteratorSymbol],  iterator);
-    else if( iterator[iteratorSymbol] != null )
+    if (methods[iteratorSymbol] != null) {
+      wrapper[iteratorSymbol] = funcBind.call(methods[iteratorSymbol], iterator);
+    }
+    else if (iterator[iteratorSymbol] != null) {
       wrapper[iteratorSymbol] = funcBind.call(iterator[iteratorSymbol], iterator);
-    else
+    }
+    else {
       wrapper[iteratorSymbol] = () => wrapper;
+    }
 
-    if( methods.return != null )
-      wrapper.return = funcBind.call(methods.return,  iterator);
-    else if( iterator.return != null )
+    if (methods.return != null) {
+      wrapper.return = funcBind.call(methods.return, iterator);
+    } else if (iterator.return != null) {
       wrapper.return = funcBind.call(iterator.return, iterator);
+    }
 
-    if( methods.throw != null )
-      wrapper.throw = funcBind.call(methods.throw,  iterator);
-    else if( iterator.throw != null )
+    if (methods.throw != null) {
+      wrapper.throw = funcBind.call(methods.throw, iterator);
+    } else if (iterator.throw != null) {
       wrapper.throw = funcBind.call(iterator.throw, iterator);
+    }
 
     return wrapper;
   };
@@ -350,8 +324,9 @@
     wrapper[iteratorSymbol] = function() {
       let iter = iterable[iteratorSymbol]();
 
-      if( ARGS_CHECK && !isIterator(iter) )
+      if (ARGS_CHECK && !isIterator(iter)) {
         throw new Error('itbl: `[Symbol.iterator]` method has not returned an iterator');
+      }
 
       return _wrapIterator(iter, methods);
     };
@@ -385,7 +360,6 @@
    */
   const _generateIterable = generator => _wrapIterable({ [iteratorSymbol]: generator });
 
-
   /**
    * Gets iterator from `iterable`. This is equivalent to calling `iterable[Symbol.iterator]` but
    * produces helpful error messages.
@@ -415,18 +389,17 @@
    */
   const _getIterator = function _getIterator(iterable, funcName, iterableName) {
 
-    if( ARGS_CHECK && !isIterable(iterable) )
+    if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error(`\`itbl.${funcName}()\`: ${iterableName} is not iterable as the [Symbol.iterator] method not defined).`);
-
+    }
     let iterator = iterable[iteratorSymbol]();
 
-    if( ARGS_CHECK && !isIterator(iterator) )
+    if (ARGS_CHECK && !isIterator(iterator)) {
       throw new Error(`itbl: ${iterableName} is not iterable as the [Symbol.iterator] method does not return an iterator.`);
+    }
 
     return _wrapIterator(iterator);
-
   };
-
 
   /**
    * Wraps `value` to produce an object that conforms to the
@@ -535,28 +508,31 @@
    */
   const wrap = function wrap(value) {
 
-    if( value instanceof _Wrapper )
+    if (value instanceof _Wrapper) {
       return value;
+    }
 
-    if( isIterator(value) )
+    if (isIterator(value)) {
       return _wrapIterator(value);
+    }
 
     // note iterators may also be iterable but they are treated as iterators
-    if( isIterable(value) )
+    if (isIterable(value)) {
       return _wrapIterable(value);
+    }
 
-
-    if( _isFunction(value) )
-    {
+    if (_isFunction(value)) {
       return _generateIterable(function() {
         let result = value();
 
-        if( isIterator(value) )
+        if (isIterator(value)) {
           return result;
+        }
 
         // get iterator from iterable
-        if( isIterable(result) )
+        if (isIterable(result)) {
           return result[iteratorSymbol]();
+        }
 
         throw new Error('itbl(): the object returned from value is not an iterable or an iterator');
       });
@@ -564,7 +540,6 @@
 
     throw new Error('itbl(): value is not an iterable, an iterator or a generator function');
   };
-
 
   /**
    * Creates a new iterable whose iterators will have values corresponding to the value
@@ -607,8 +582,9 @@
       ? iteratee
       : identity;
 
-    if( ARGS_CHECK && !isIterable(iterable) )
+    if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error('itbl.map: `iterable` does not define the `[Symbol.iterator]` method');
+    }
 
     return (isIterator(iterable)
       ? _wrapIterator
@@ -618,13 +594,14 @@
         const step = this.next();
         let mapped;
 
-        if( !step.done )
+        if (!step.done) {
           mapped = iteratee(step.value);
+        }
 
         return {
           value: mapped,
           done: step.done,
-        }
+        };
       },
     });
   };
@@ -680,8 +657,9 @@
         ? predicate
         : identity;
 
-    if( ARGS_CHECK && !isIterable(iterable) )
+    if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error('itbl.filter: `iterable` does not define the `[Symbol.iterator]` method');
+    }
 
     return (isIterator(iterable)
             ? _wrapIterator
@@ -690,7 +668,7 @@
       next() {
         let step;
 
-        while( !(step = this.next()).done && !predicate(step.value) ) {}
+        while (!(step = this.next()).done && !predicate(step.value)) {}
 
         return step;
       },
@@ -734,69 +712,17 @@
           allDone = true,
           i = 0;
 
-      for( let step of iterators.map(iterator => iterator.next()) ) {
+      for (let step of iterators.map(iterator => iterator.next())) {
 
         returnValues[i] = step.done ? step.value : returnValues[i];
 
-        values.push(     !step.done ? step.value : undefined    );
+        values.push(!step.done ? step.value : undefined);
 
         anyDone = anyDone || step.done;
         allDone = allDone && step.done;
-
 
         // TODO don't like having index variable in for-of loop
         ++i;
-      }
-
-      return { values, returnValues, anyDone, allDone };
-    };
-  }
-
-
-  /**
-   * Combines all `object`'s own enumerable values (which must be iterators) into a single iterable containing objects
-   * containing values from each iterable in `object`.
-   *
-   *
-   *
-   * @private
-   * @static
-   * @memberOf itbl
-   * @since 0.1.0
-   * @param {Object} object Collection of iterators
-   *
-   * @returns {itbl} Iterable containing collection of values.
-   * @throws {Error} Throws an error if any own enumerable values of `object` are not enumerable.
-   *
-   */
-  function _objectCombine(object) {
-
-    let iterators = {};
-
-
-    for( let key of Object.keys(object) ) {
-      iterators[key] = _getIterator(object[key], 'combine', `\`collection.${key}\` is not an iterator`);
-    }
-    let returnValues = {};
-
-    return function() {
-
-      let values = {},
-
-          anyDone = false,
-          allDone = true;
-
-      for( let key of Object.keys(iterators) )
-      {
-        let step = iterators[key].next();
-
-        returnValues[key] =  step.done ? step.value : returnValues[key];
-
-        values      [key] = !step.done ? step.value : undefined;
-
-        anyDone = anyDone || step.done;
-        allDone = allDone && step.done;
-
       }
 
       return { values, returnValues, anyDone, allDone };
@@ -869,7 +795,7 @@
     let finishLate = false,
         finishTogether = false;
 
-    switch(finish) {
+    switch (finish) {
       case undefined:
       case null:
       case 'e':
@@ -900,27 +826,74 @@
 
           let { values, returnValues, anyDone, allDone } = rawCombined();
 
-
-          if( (!finishLate && anyDone) || allDone )
-          {
-            if( finishTogether && !allDone )
+          if ((!finishLate && anyDone) || allDone) {
+            if (finishTogether && !allDone) {
               throw new Error("`itbl.combine()`: iterables combined with `finish === 'together'` have not finished together");
+            }
 
             return {
               value: returnValues,
               done: true,
             };
           }
-          else
-            return {
-              value: values,
-              done: false,
-            };
+
+          return {
+            value: values,
+            done: false,
+          };
         },
       };
     });
 
   };
+
+  /**
+   * Combines all `object`'s own enumerable values (which must be iterators) into a single iterable containing objects
+   * containing values from each iterable in `object`.
+   *
+   *
+   *
+   * @private
+   * @static
+   * @memberOf itbl
+   * @since 0.1.0
+   * @param {Object} object Collection of iterators
+   *
+   * @returns {itbl} Iterable containing collection of values.
+   * @throws {Error} Throws an error if any own enumerable values of `object` are not enumerable.
+   *
+   */
+  function _objectCombine(object) {
+
+    let iterators = {};
+
+    for (let key of Object.keys(object)) {
+      iterators[key] = _getIterator(object[key], 'combine', `\`collection.${key}\` is not an iterator`);
+    }
+    let returnValues = {};
+
+    return function() {
+
+      let values = {},
+
+          anyDone = false,
+          allDone = true;
+
+      for (let key of Object.keys(iterators)) {
+        let step = iterators[key].next();
+
+        returnValues[key] =  step.done ? step.value : returnValues[key];
+
+        values      [key] = !step.done ? step.value : undefined;
+
+        anyDone = anyDone || step.done;
+        allDone = allDone && step.done;
+
+      }
+
+      return { values, returnValues, anyDone, allDone };
+    };
+  }
 
   /**
    * Reverts the `itbl` variable to its previous value and returns a reference to
@@ -941,7 +914,6 @@
     return this;
   }
 
-
   let itbl = wrap;
 
   itbl.prototype = _Wrapper.prototype;
@@ -956,8 +928,7 @@
     noConflict,
     map,
     wrap,
-
- }, EXPOSE_INTERNAL
+  }, EXPOSE_INTERNAL
   ? {
     _wrapIterable,
     _wrapIterator,
