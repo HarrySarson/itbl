@@ -429,40 +429,41 @@
 
 
   /**
-   * Wraps any value to produce an object that conforms to the
+   * Wraps `value` to produce an object that conforms to the
    * iterable protocol and - if `value` is an iterator - the iterator protocol.
    *
    * If `value` is an iterable or an iterator, then `value` will be wrapped in an
    * instance of `itbl`.
    *
-   * If `value` is not an iterable, an iterator or a function then an iterable containing
-   * `value` will be created and wrapped in an instance of `itbl`.
+   * If `value` is not an iterable, an iterator or a function then `wrap` will throw
+   * an exception.
    *
    * If `value` is a function, an iterable instance of `itbl` will be returned.
    * When the `[Symbol.iterator]` method is called,  `value` will be invoked.
    * - If `value` returns an iterator it will be wrapped
    * - If `value` returns an iterable then its
-   * `[Symbol.iterator]` method will be called and that iterator wraped.
-   * - If 'value' returns any other value (including a function) then an iterable
-   * containing that value will be created, its `[Symbol.iterator]` method called
-   * and that iterator wrapped.
+   * `[Symbol.iterator]` method will be called and that iterator wrapped.
+   * - If 'value' returns any other value (including a function) an expception
+   * will be thrown.
    *
-   * Therefore all of these are roughly equivalent
+   * Therefore all of these are roughly equivalent:
    * ```javascript
    * itbl([6]);
-   * itbl(6);
-   * itbl(function() { return 6; });
    * itbl(function() { return [6]; });
    * itbl(function() { return [6][Symbol.iterator](); });
-   *
+   *    *
    * // this can only be iterated over once, unlike all the above
    * itbl([6][Symbol.iterator]());
    * ```
    *
-   * As `value` will be invoked if it is a function, if an iterable containing a
-   * function is required then the function should be explicitly wrapped in an iterable
-   * (e.g. `itbl([function() {...}])`).
+   * These will raise an exception:
+   * ```javascript
    *
+   * itbl(function() { return 6; });
+   * itbl(6);
+   *
+   * ```
+   *   *
    * All itbl functions that take an iterable as their first parameter
    * and return an iterable are chainable and so can be called as methods of the
    * wrapped value.
@@ -557,11 +558,11 @@
         if( isIterable(result) )
           return result[iteratorSymbol]();
 
-        else return singleIterator(result);
+        throw new Error('itbl(): the object returned from value is not an iterable or an iterator');
       });
     }
 
-    return singleIterable(value)
+    throw new Error('itbl(): value is not an iterable, an iterator or a generator function');
   };
 
 

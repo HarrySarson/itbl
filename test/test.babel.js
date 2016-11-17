@@ -75,6 +75,43 @@
 
   /** Sample iterator values */
   const iterators = iterables.map(iterable => iterable[Symbol.iterator]());
+
+  const generators = [
+
+    function*() {
+      let a = 1,
+          b = 1;
+
+      for(;;) {
+        yield a;
+
+        [a, b] = [a + b, a];
+      }
+    },
+
+    function*() {
+      yield* [1,2,3,4];
+    },
+
+    function() {
+      i = 0;
+      return {
+        next() {
+          return i++;
+        },
+      }
+    }
+  ];
+
+  const iterableProducers = [
+
+    function() { return [1,2,3]; },
+
+    function() { return stableItbl([1,2,3]) },
+
+  ]
+
+
   
   /** Sample non-iteratable, not iterator values */
   const normalValues = [
@@ -469,7 +506,7 @@
 
   QUnit.module('itbl wrapper function');
 
-  const wrappedItems  = iterables.concat(iterators, normalValues).map(testItbl);
+  const wrappedItems = iterables.concat(iterators, generators, iterableProducers).map(testItbl);
 
   QUnit.test('`itbl(anyValue)` returns an iterable instance of itbl._Wrapper', assert => {
     assert.expect(2);
@@ -498,25 +535,45 @@
     assert.deepEqual(wrappedItems.map(testItbl), wrappedItems);
   });
 
-  QUnit.test('`itbl(notIterableOrIterator)` returns an iterable containing `notIterableOrIterator`', assert => {
+  QUnit.test('`itbl(notIterableOrIteratorOrFunction)` throws`', assert => {
     assert.expect(1);
 
+    let errors = normalValues.map(value => {
+      try{
+        testItbl(value);
+        return false;
+      }catch(e){
+        return true;
+      }
+    });
+
     assert.deepEqual(
-      normalValues.map(value => [...testItbl(value)]),
-      normalValues.map(value => [value]),
+      errors,
+      normalValues.map(() => true),
       'non iterable values',
     );
   });
 
-  QUnit.test('`itbl(function() { return notIterableOrIterator })` returns iterable containing `notIterableOrIterator`', assert => {
+  QUnit.test('`itbl(function() { return notIterableOrIterator })` throws when iterated over`', assert => {
     assert.expect(1);
 
+
+    let errors = normalValues.map(value => {
+
+      // this shouldn't throw
+      let wrapped = testItbl(() => value);
+
+      try{
+        [...wrapped];
+        return false;
+      }catch(e){
+        return true;
+      }
+    });
+
     assert.deepEqual(
-      normalValues.map(value => [...testItbl(function () {
-        return value
-      })]),
-      normalValues.map(value => [value]),
-      'non iterable values',
+      errors,
+      normalValues.map(() => true),
     );
   });
 
