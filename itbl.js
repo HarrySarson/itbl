@@ -487,7 +487,7 @@
    *  .filter(_.matchesProperty('subject', 'Maths'))
    *  .map(_.property('name'));
    *
-   * [...mathematicians]
+   * [...mathematicians];
    * // -> ['Martin Smith', 'Rachel Richardson']
    *
    * let arr = [1, 7, 8, 9];
@@ -558,21 +558,21 @@
    *
    * @example
    *
-   * for(let coor of itbl.map([0,1,2,3,4,5], x => ({ x, y: Math.exp(x)))) {
+   * for(let coor of itbl.map([0, 1, 2, 3, 4, 5], x => ({ x, y: Math.exp(x) }))) {
    *   context.lineTo(coor.x, coor.y);
    * }
    *
-   * let mySet = new Set().add(1).add('a').add(NaN)
+   * let mySet = new Set().add(1).add('a').add(NaN);
    *
-   * [...itbl.map(mySet, value => value + 1)]
+   * [...itbl.map(mySet, value => value + 1)];
    * // [2, 'a1', NaN]
    *
    * var users = [
    *   { 'user': 'barney' },
-   *   { 'user': 'fred' }
+   *   { 'user': 'fred' },
    * ];
    *
-   * [...itbl.map(users, _.property('user'));
+   * [...itbl.map(users, _.property('user'))];
    * // => ['barney', 'fred']
    *
    */
@@ -625,12 +625,12 @@
    *
    * @example
    *
-   * [...itbl.filter([0,1,2,3,4,5], val => val%2 === 0)]
+   * [...itbl.filter([0,1,2,3,4,5], val => val%2 === 0)];
    * // [0,2,4]
    *
-   * let mySet = new Set().add(1).add('a').add(NaN)
+   * let mySet = new Set().add(1).add('a').add(NaN);
    *
-   * [...itbl.filter(mySet, value => _.isFinite)]
+   * [...itbl.filter(mySet, value => _.isFinite)];
    * // [1]
    *
    * var users = [
