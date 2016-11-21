@@ -4,8 +4,14 @@
   "description": "Utility libary for es6 iterators",
   "main": "itbl.js",
   "scripts": {
-    "test": "babel-node test/test.babel.js",
-    "test:compiled": "node test/test.babel-compiled.js"
+    "style": "npm run style:main",
+    "style:main": "jscs itbl.js",
+    "style:test": "jscs test/*.js test/**/*.js",
+    "test": "npm run test:main",
+    "test:doc": "markdown-doctest doc/*.md",
+    "test:main": "babel-node test/test.babel.js",
+    "doc": "babel-node lib/build-doc.babel.js github && npm run test:doc",
+    "doc:site": "node lib/build-doc site"
   },
   "keywords": [
     "util",
@@ -23,17 +29,10 @@
     "bluebird": "^3.4.1",
     "docdown": "^0.7.1",
     "fs-extra": "^0.30.0",
-    "gulp-eol-enforce": "^0.1.0",
-    "gulp-line-ending-corrector": "^1.0.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.4",
-    "gulp-umd": "^0.2.0",
     "itbl": "1.1.2",
+    "jscs": "^3.0.7",
     "lodash": "^4.16.3",
-    "qunit-extras": "^2.1.0",
-    "run-sequence": "^1.2.2",
-    "vinyl-file": "^2.0.0",
-    "vinyl-fs": "^2.4.3"
+    "qunit-extras": "^2.1.0"
   },
   "dependencies": {
     "system": "^1.0.6"
