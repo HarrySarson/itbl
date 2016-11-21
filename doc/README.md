@@ -1,4 +1,4 @@
-# <a href="https://harrysarson.github.io/itbl">itbl</a> <span>v1.1.2</span>
+# <a href="https://harrysarson.github.io/itbl">itbl</a> <span>v2.0.0</span>
 
 <!-- div class="toc-container" -->
 
@@ -28,7 +28,7 @@
 <!-- div -->
 
 <h3 id="itblvalue"><code>itbl(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L509 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L499 "View in source") [&#x24C9;][1]
 
 Wraps `value` to produce an object that conforms to the<br>
 <br>
@@ -113,27 +113,7 @@ The chainable methods are:<br>
 <br>
 <br>
 <br>
-`filter` and `map`.<br>
-<br>
-<br>
-<br>
-In custom builds, including a function in the build will that function chainable.<br>
-<br>
-```javascript<br>
-<br>
-// require libraries, *(order is not important)*<br>
-<br>
-let wrap = require('itbl/wrap');<br>
-<br>
-let map = require('itbl/map');<br>
-<br>
-<br>
-<br>
-// map a chainable function<br>
-<br>
-let result = wrap(...).map(function(i) { ... });<br>
-<br>
-```
+`filter` and `map`.
 
 #### Since
 0.1.0
@@ -193,7 +173,7 @@ let arrayReverse = function arrayReverse(array) {
 <!-- div -->
 
 <h3 id="itblcombinecollection-finishearly"><code>itbl.combine(collection, [finish='early'])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L793 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L783 "View in source") [&#x24C9;][1]
 
 Combines the iterables in `collection` into a single iterable containing collections<br>
 <br>
@@ -289,7 +269,7 @@ for(let {x, y} of coordinates) {
 <!-- div -->
 
 <h3 id="itblfilteriterable-predicate_identity"><code>itbl.filter(iterable, [predicate=_.identity])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L654 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L644 "View in source") [&#x24C9;][1]
 
 Creates a new iterable containing values which the `predicate` returns truthy for.
 
@@ -336,7 +316,7 @@ var users = [
 <!-- div -->
 
 <h3 id="itblisiterablevalue"><code>itbl.isIterable(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L227 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L227 "View in source") [&#x24C9;][1]
 
 Checks if `value` is an iterable object according to es6 iterator protocols.<br>
 <br>
@@ -385,7 +365,7 @@ itbl.isIterable({1: 1, 2: 2, 3: 3});
 <!-- div -->
 
 <h3 id="itblisiteratorvalue"><code>itbl.isIterator(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L189 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L189 "View in source") [&#x24C9;][1]
 
 Checks if `value` is an iterator according to es6 iterator protocols.<br>
 <br>
@@ -431,7 +411,7 @@ for(let i of ['a'])
 <!-- div -->
 
 <h3 id="itblmapiterable-iteratee_identity"><code>itbl.map(iterable, [iteratee=_.identity])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L579 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L569 "View in source") [&#x24C9;][1]
 
 Creates a new iterable whose iterators will have values corresponding to the value<br>
 <br>
@@ -474,7 +454,7 @@ var users = [
 <!-- div -->
 
 <h3 id="itblnoconflict"><code>itbl.noConflict()</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L910 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L900 "View in source") [&#x24C9;][1]
 
 Reverts the `itbl` variable to its previous value and returns a reference to<br>
 <br>
@@ -496,7 +476,7 @@ var IterableUtil = itbl.noConflict();
 <!-- div -->
 
 <h3 id="returnvalue"><code>return(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/1.1.2/itbl.js#L135 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L135 "View in source") [&#x24C9;][1]
 
 
 

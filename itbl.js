@@ -445,16 +445,6 @@
    *
    * `filter` and `map`.
    *
-   * In custom builds, including a function in the build will that function chainable.
-   * ```javascript
-   * // require libraries, (order is not important)
-   * let wrap = require('itbl/wrap');
-   * let map = require('itbl/map');
-   *
-   * // map a chainable function
-   * let result = wrap(...).map(function(i) { ... });
-   * ```
-   *
    * @static
    * @name itbl
    * @alias wrap
