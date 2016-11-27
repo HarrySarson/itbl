@@ -7,6 +7,7 @@ module.exports = {
     context: {
       moveTo: function() {},
       lineTo: function() {},
-    }
+    },
+    regeneratorRuntime: require('regenerator-runtime'), // fudge for generator functions in docs
   },
 };

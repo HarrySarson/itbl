@@ -28,7 +28,7 @@
 <!-- div -->
 
 <h3 id="itblvalue"><code>itbl(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L498 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L499 "View in source") [&#x24C9;][1]
 
 Wraps `value` to produce an object that conforms to the
 iterable protocol and - if `value` is an iterator - the iterator protocol.
@@ -66,6 +66,7 @@ itbl([6][Symbol.iterator]());
 <br>
 <br>
 These will raise an exception:<br>
+<!-- skip-example -->
 ```javascript
 itbl(function() { return `6`; });
 itbl(6);
@@ -141,7 +142,7 @@ let arrayReverse = function arrayReverse(array) {
 <!-- div -->
 
 <h3 id="itblcombinecollection-finishearly"><code>itbl.combine(collection, [finish='early'])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L782 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L783 "View in source") [&#x24C9;][1]
 
 Combines the iterables in `collection` into a single iterable containing collections
 of values from each iterable in `collection`.
@@ -222,7 +223,7 @@ for(let {x, y} of coordinates) {
 <!-- div -->
 
 <h3 id="itblfilteriterable-predicate_identity"><code>itbl.filter(iterable, [predicate=_.identity])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L643 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L644 "View in source") [&#x24C9;][1]
 
 Creates a new iterable containing values which the `predicate` returns truthy for.
 
@@ -361,7 +362,7 @@ for(let i of ['a'])
 <!-- div -->
 
 <h3 id="itblmapiterable-iteratee_identity"><code>itbl.map(iterable, [iteratee=_.identity])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L568 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L569 "View in source") [&#x24C9;][1]
 
 Creates a new iterable whose iterators will have values corresponding to the value
 of the Iterator of the original iterable run through `iteratee`.
@@ -403,7 +404,7 @@ var users = [
 <!-- div -->
 
 <h3 id="itblnoconflict"><code>itbl.noConflict()</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L899 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/2.0.0/itbl.js#L900 "View in source") [&#x24C9;][1]
 
 Reverts the `itbl` variable to its previous value and returns a reference to
 the `itbl` function.

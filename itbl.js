@@ -431,6 +431,7 @@
    * ```
    *
    * These will raise an exception:
+   * <!-- skip-example -->
    * ```javascript
    * itbl(function() { return 6; });
    * itbl(6);
