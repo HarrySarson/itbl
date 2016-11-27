@@ -1,4 +1,5 @@
 
+
 ;(function() {
   'use strict';
 
@@ -416,7 +417,7 @@
    * - If `value` returns an iterator it will be wrapped
    * - If `value` returns an iterable then its
    * `[Symbol.iterator]` method will be called and that iterator wrapped.
-   * - If 'value' returns any other value (including a function) an expception
+   * - If `value` returns any other value (including a function) an expception
    * will be thrown.
    *
    * Therefore all of these are roughly equivalent:
@@ -424,19 +425,17 @@
    * itbl([6]);
    * itbl(function() { return [6]; });
    * itbl(function() { return [6][Symbol.iterator](); });
-   *    *
+   *
    * // this can only be iterated over once, unlike all the above
    * itbl([6][Symbol.iterator]());
    * ```
    *
    * These will raise an exception:
    * ```javascript
-   *
    * itbl(function() { return 6; });
    * itbl(6);
-   *
    * ```
-   *   *
+   *
    * All itbl functions that take an iterable as their first parameter
    * and return an iterable are chainable and so can be called as methods of the
    * wrapped value.
