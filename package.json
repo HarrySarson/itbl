@@ -6,7 +6,7 @@
   "scripts": {
     "style": "npm run style:main",
     "style:main": "jscs itbl.js",
-    "style:test": "jscs test/*.js test/**/*.js",
+    "style:test": "jscs test/*.js",
     "test": "npm run test:main",
     "test:doc": "markdown-doctest doc/*.md",
     "test:main": "babel-node test/test.babel.js",
@@ -33,8 +33,5 @@
     "jscs": "^3.0.7",
     "lodash": "^4.16.3",
     "qunit-extras": "^2.1.0"
-  },
-  "dependencies": {
-    "system": "^1.0.6"
   }
 }

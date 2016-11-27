@@ -1,36 +1,13 @@
-;(function () {
+;(function() {
   'use strict';
 
   /** Used as a reference to the global object. */
   const root = (typeof global == 'object' && global) || this;
 
   /** Method and object shortcuts. */
-  const
-    phantom = root.phantom;
-  const process = root.process;
-  const amd = root.define && define.amd;
-  const argv = process && process.argv;
-  const defineProperty = Object.defineProperty;
-  const document = !phantom && root.document;
-  const body = root.document && root.document.body;
-  const create = Object.create;
-  const fnToString = Function.prototype.toString;
-  const freeze = Object.freeze;
-  const getSymbols = Object.getOwnPropertySymbols;
   const identity = value => value;
-  const noop = function () {
-  };
-  const objToString = Object.prototype.toString;
-  const params = phantom
-    ? phantom.args || require('system').arg
-    : argv;
-  const push = Array.prototype.push;
-  const realm = {};
-  const slice = Array.prototype.slice;
-
-
-  /** Load QUnit and extras (TODO: not portable as using fudged version of qunit-extras). */
-  var QUnit = root.QUnit || require('../../qunit-extras');
+  /** Load QUnit and extras */
+  var QUnit = root.QUnit || require('qunit-extras');
 
   /** Load lodash */
   const _ = root._ || require('lodash');
@@ -43,7 +20,8 @@
   if (!stableItbl) {
     try {
       stableItbl = require('../node_modules/itbl/itbl.js');
-    } catch (e) {
+    }
+    catch (e) {
       console.log('Error: The stable itbl dev dependency should be at least a version behind master branch.');
       throw e;
     }
@@ -54,7 +32,7 @@
   const iterables = [
     [1, 2, 3],
     new Set([1, 2, 3]),
-    ...(function(){
+    ...(function() {
       const map = new Map([[1, 1], [2, 2], [3, 3]]);
 
       return ['keys', 'values'].map(funcName => ({
@@ -72,7 +50,6 @@
     },
   ];
 
-
   /** Sample iterator values */
   const iterators = iterables.map(iterable => iterable[Symbol.iterator]());
 
@@ -82,7 +59,7 @@
       let a = 1,
           b = 1;
 
-      for(;;) {
+      for (; ;) {
         yield a;
 
         [a, b] = [a + b, a];
@@ -90,7 +67,7 @@
     },
 
     function*() {
-      yield* [1,2,3,4];
+      yield* [1, 2, 3, 4];
     },
 
     function() {
@@ -99,20 +76,22 @@
         next() {
           return i++;
         },
-      }
-    }
+      };
+    },
   ];
 
   const iterableProducers = [
 
-    function() { return [1,2,3]; },
+    function() {
+      return [1, 2, 3];
+    },
 
-    function() { return stableItbl([1,2,3]) },
+    function() {
+      return stableItbl([1, 2, 3]);
+    },
 
-  ]
+  ];
 
-
-  
   /** Sample non-iteratable, not iterator values */
   const normalValues = [
     1,
@@ -122,34 +101,7 @@
     Symbol('symbol'),
   ];
 
-  /** The file path of the lodash file to test. */
-  var filePath = (function () {
-    var min = 2,
-      result = params || [];
-
-    if (phantom) {
-      min = 0;
-    }
-    var last = result[result.length - 1];
-    result = (result.length > min && !/test(?:\.js)?$/.test(last)) ? last : '../lodash.js';
-
-    if (!amd) {
-      try {
-        result = require('fs').realpathSync(result);
-      } catch (e) {
-      }
-
-      try {
-        result = require.resolve(result);
-      } catch (e) {
-      }
-    }
-    return result;
-  }());
-
-
   /*--------------------------------------------------------------------------*/
-
 
   QUnit.module('isType checks');
 
@@ -157,7 +109,7 @@
     assert.expect(1);
 
     const expected = iterables.map(iterable => true);
-    const actual = iterables.map(testItbl.isIterable);
+    const actual   = iterables.map(testItbl.isIterable);
 
     assert.deepEqual(actual, expected, 'harry');
   });
@@ -166,7 +118,7 @@
     assert.expect(1);
 
     const expected = iterables.map(iterable => true);
-    const actual = iterables.map(iterable => iterable[Symbol.iterator]()).map(testItbl.isIterator);
+    const actual   = iterables.map(iterable => iterable[Symbol.iterator]()).map(testItbl.isIterator);
 
     assert.deepEqual(actual, expected);
   });
@@ -174,10 +126,10 @@
   QUnit.test('isIterator and isIterable should detect non-iterators/non-iterables', assert => {
     assert.expect(2);
 
-    const values = [1, function () {
-    }, {h: 6}];
+    const values = [1, function() {
+    }, { h: 6 }];
 
-    const expected = values.map(iterable => false);
+    const expected       = values.map(iterable => false);
     const actualIterable = values.map(testItbl.isIterable);
     const actualIterator = values.map(testItbl.isIterator);
 
@@ -193,8 +145,8 @@
 
     assert.expect(2);
 
-    const expected = iterables.map(iterable => true);
-    const wrapped = iterables.map(testItbl._wrapIterable);
+    const expected    = iterables.map(iterable => true);
+    const wrapped     = iterables.map(testItbl._wrapIterable);
     const isIterables = wrapped.map(stableItbl.isIterable);
     const instancesOf = wrapped.map(wrpd => wrpd instanceof testItbl._Wrapper);
 
@@ -223,8 +175,8 @@
 
     assert.expect(3);
 
-    const expected = iterators.map(itorator => true);
-    const wrapped = iterators.map(testItbl._wrapIterator);
+    const expected    = iterators.map(itorator => true);
+    const wrapped     = iterators.map(testItbl._wrapIterator);
     const isIterables = wrapped.map(stableItbl.isIterable);
     const isIterators = wrapped.map(stableItbl.isIterator);
     const instancesOf = wrapped.map(wrpd => wrpd instanceof testItbl._Wrapper);
@@ -275,7 +227,7 @@
       'throw',
     ];
 
-    let wrapped = testItbl._wrapIterator(testIterator);
+    let wrapped     = testItbl._wrapIterator(testIterator);
     let overwritten = testItbl._wrapIterator(testIterator, methods);
 
     assert.deepEqual(
@@ -288,9 +240,7 @@
       methodNames.map((mn, i) => 11 + i),
       'overwriten methods',
     );
-
   });
-
 
   QUnit.test('generate produces an iterable instance of itbl._Wrapper', assert => {
 
@@ -299,17 +249,16 @@
     const sym = Symbol();
 
     const gen = function*() {
-      yield sym
+      yield sym;
     };
 
     const anIterable = testItbl._generateIterable(gen);
 
-
     assert.ok(stableItbl.isIterable(anIterable), 'isIterable');
-    assert.strictEqual(anIterable[Symbol.iterator]().next().value, sym, '[Symbol.iterator] method is the one provided to generateIterable');
+    assert.strictEqual(anIterable[Symbol.iterator]().next().value, sym,
+      '[Symbol.iterator] method is the one provided to generateIterable');
     assert.ok(anIterable instanceof testItbl._Wrapper, 'instanceof _Wrapper');
   });
-
 
   /*--------------------------------------------------------------------------*/
 
@@ -322,43 +271,46 @@
 
     const
       array = [1, 2, 3],
-      func = testItbl[methodName];
+      func  = testItbl[methodName];
 
     QUnit.test('`itbl.' + methodName + '` should provide correct iteratee argument', assert => {
       assert.expect(1);
 
       let args = [];
 
-      for( let i of  func(array, function (...a) {
+      for (let i of  func(array, function(...a) {
         args.push(a);
-      })) {}
+      })) {
+        i; // fudge to make `i` used
+      }
 
       assert.deepEqual(args, [[1], [2], [3]]);
 
     });
 
-    QUnit.test('`itbl.' + methodName + '` should return an iterable instance of itbl._Wrapper', function (assert) {
+    QUnit.test('`itbl.' + methodName + '` should return an iterable instance of itbl._Wrapper', function(assert) {
       assert.expect(2);
 
-      const testItems = iterables.concat(iterators);
-      const expected = testItems.map(item => true);
-      const isIterable = testItems.map(item => stableItbl.isIterable(func(item, identity)));
+      const testItems    = iterables.concat(iterators);
+      const expected     = testItems.map(item => true);
+      const isIterable   = testItems.map(item => stableItbl.isIterable(func(item, identity)));
       const isInstanceof = testItems.map(item => func(item, identity) instanceof testItbl._Wrapper);
 
       assert.deepEqual(isIterable, expected, 'isIterable');
       assert.deepEqual(isInstanceof, expected, 'instanceof _Wrapper');
     });
 
-    QUnit.test('`itbl.' + methodName + '` should return an iterator when `iterable` is also an iterator', function (assert) {
-      assert.expect(1);
+    QUnit.test('`itbl.' + methodName + '` should return an iterator when `iterable` is also an iterator',
+      function(assert) {
+        assert.expect(1);
 
-      const expected = iterators.map(iterator => true);
-      const isIterator = iterators.map(iterator => stableItbl.isIterator(func(iterator, identity)));
+        const expected   = iterators.map(iterator => true);
+        const isIterator = iterators.map(iterator => stableItbl.isIterator(func(iterator, identity)));
 
-      assert.deepEqual(isIterator, expected, 'isIterator');
-    });
+        assert.deepEqual(isIterator, expected, 'isIterator');
+      });
 
-    QUnit.test('`itbl.' + methodName + '` callback should default to identity', function (assert) {
+    QUnit.test('`itbl.' + methodName + '` callback should default to identity', function(assert) {
       assert.expect(1);
 
       const testItems = iterables;
@@ -368,10 +320,10 @@
       assert.deepEqual(actual, expected);
     });
 
-    QUnit.test('`itbl.' + methodName + '` should throw if `iterable` is not iterable', function (assert) {
+    QUnit.test('`itbl.' + methodName + '` should throw if `iterable` is not iterable', function(assert) {
       assert.expect(2);
 
-      const noIteratorMethod = {};
+      const noIteratorMethod      = {};
       const iteratorMethodInvalid = {
         [Symbol.iterator]() {
           return true;
@@ -379,22 +331,26 @@
       };
 
       assert.throws(_.partial(func, noIteratorMethod), 'no [Symbol.iterator] method');
-      assert.throws(function() { return [...func(iteratorMethodInvalid)] },
+      assert.throws(function() {
+          return [...func(iteratorMethodInvalid)];
+        },
         'throws on iteration, [Symbol.iterator] method does not return an iterator');
     });
 
   });
 
-  QUnit.test('`itbl.map` should map', function (assert) {
+  QUnit.test('`itbl.map` should map', function(assert) {
     assert.expect(1);
 
-    assert.deepEqual(iterables.map(iterable => [...testItbl.map(iterable, x => x*x)]), iterables.map(iterable => [...stableItbl.map(iterable, x => x*x)]));
+    assert.deepEqual(iterables.map(iterable => [...testItbl.map(iterable, x => x * x)]),
+      iterables.map(iterable => [...stableItbl.map(iterable, x => x * x)]));
   });
 
-  QUnit.test('`itbl.filter` should filter', function (assert) {
+  QUnit.test('`itbl.filter` should filter', function(assert) {
     assert.expect(1);
 
-    assert.deepEqual(iterables.map(iterable => [...testItbl.filter(iterable, x => x%2 === 1)]), iterables.map(iterable => [...stableItbl.filter(iterable, x => x%2 === 1)]));
+    assert.deepEqual(iterables.map(iterable => [...testItbl.filter(iterable, x => x % 2 === 1)]),
+      iterables.map(iterable => [...stableItbl.filter(iterable, x => x % 2 === 1)]));
   });
 
   /*--------------------------------------------------------------------------*/
@@ -410,9 +366,9 @@
     const togetherArr = [[1, 2], [4, 5]];
 
     const early = [[1, 4], [2, 5]];
-    const late = [[1, 4], [2, 5], [3, undefined]];
+    const late  = [[1, 4], [2, 5], [3, undefined]];
 
-    assert.deepEqual([...testItbl.combine(arr)], early , 'default finish');
+    assert.deepEqual([...testItbl.combine(arr)], early, 'default finish');
     assert.deepEqual([...testItbl.combine(arr, 'e')], early, "`finish = 'e'`");
 
     assert.deepEqual([...testItbl.combine(arr, 'early')], early, "`finish = 'early'`");
@@ -420,47 +376,46 @@
     assert.deepEqual([...testItbl.combine(arr, 'late')], late, "`finish = 'late'`");
 
     // should throw
-    assert.throws   (() => [...testItbl.combine(arr, 't')], Error, "`finish = 't'` - should throw");
-    assert.throws   (() => [...testItbl.combine(arr, 'together')], Error, "`finish = 'together'` - should throw");
+    assert.throws(() => [...testItbl.combine(arr, 't')], Error, "`finish = 't'` - should throw");
+    assert.throws(() => [...testItbl.combine(arr, 'together')], Error, "`finish = 'together'` - should throw");
     // should not throw
-    assert.deepEqual([...testItbl.combine(togetherArr)], early,  "`finish = 't'`");
-    assert.deepEqual([...testItbl.combine(togetherArr)], early,  "`finish = together`");
+    assert.deepEqual([...testItbl.combine(togetherArr)], early, "`finish = 't'`");
+    assert.deepEqual([...testItbl.combine(togetherArr)], early, '`finish = together`');
 
-    assert.throws   (_.partial(testItbl.combine, arr, false), Error, "invalid `finish` rejected");
+    assert.throws(_.partial(testItbl.combine, arr, false), Error, 'invalid `finish` rejected');
   });
 
   QUnit.test('`itbl.combine(objectOfIterables)` creates an iterableOfobjects', assert => {
 
     assert.expect(10);
 
-    const obj = { x: [1, 2, 3], y: [3, 4] };
+    const obj         = { x: [1, 2, 3], y: [3, 4] };
     const togetherObj = { x: [1, 2], y: [3, 4] };
 
     const early = [
       { x: 1, y: 3 },
       { x: 2, y: 4 },
     ];
-    const late = [
+    const late  = [
       { x: 1, y: 3 },
       { x: 2, y: 4 },
       { x: 3, y: undefined },
     ];
 
-
-    assert.deepEqual([...testItbl.combine(obj)], early , 'default finish');
+    assert.deepEqual([...testItbl.combine(obj)], early, 'default finish');
     assert.deepEqual([...testItbl.combine(obj, 'e')], early, "`finish = 'e'`");
     assert.deepEqual([...testItbl.combine(obj, 'early')], early, "`finish = 'early'`");
     assert.deepEqual([...testItbl.combine(obj, 'l')], late, "`finish = 'l'`");
     assert.deepEqual([...testItbl.combine(obj, 'late')], late, "`finish = 'late'`");
 
     // should throw
-    assert.throws   (() => [...testItbl.combine(obj, 't')], Error, "`finish = 't'` - should throw");
-    assert.throws   (() => [...testItbl.combine(obj, 'together')], Error, "`finish = 'together'` - should throw");
+    assert.throws(() => [...testItbl.combine(obj, 't')], Error, "`finish = 't'` - should throw");
+    assert.throws(() => [...testItbl.combine(obj, 'together')], Error, "`finish = 'together'` - should throw");
     // should not throw
-    assert.deepEqual([...testItbl.combine(togetherObj)], early,  "`finish = 't'`");
-    assert.deepEqual([...testItbl.combine(togetherObj)], early,  "`finish = together`");
+    assert.deepEqual([...testItbl.combine(togetherObj)], early, "`finish = 't'`");
+    assert.deepEqual([...testItbl.combine(togetherObj)], early, '`finish = together`');
 
-    assert.throws   (_.partial(testItbl.combine, obj, false), Error, "invalid `finish` rejected");
+    assert.throws(_.partial(testItbl.combine, obj, false), Error, 'invalid `finish` rejected');
   });
 
   QUnit.test('`itbl.combine()` returns an iterable instance of `itbl`', assert => {
@@ -481,7 +436,7 @@
     let n = 3;
 
     let combObj = testItbl.combine({ x: [1, 2, 3], y: [3, 4] });
-    let combArr = testItbl.combine([ [1, 2, 3], [3, 4] ]);
+    let combArr = testItbl.combine([[1, 2, 3], [3, 4]]);
 
     let objs = _.times(n, () => [...combObj]);
     let arrs = _.times(n, () => [...combArr]);
@@ -500,8 +455,6 @@
     assert.deepEqual(arrs, expectedArr, 'collection is an iterable');
   });
 
-
-
   /*--------------------------------------------------------------------------*/
 
   QUnit.module('itbl wrapper function');
@@ -511,9 +464,9 @@
   QUnit.test('`itbl(anyValue)` returns an iterable instance of itbl._Wrapper', assert => {
     assert.expect(2);
 
-    const expected      = wrappedItems.map(item => true);
-    const isInstanceof  = wrappedItems.map(item => item instanceof testItbl._Wrapper);
-    const isIterable    = wrappedItems.map(testItbl.isIterable);
+    const expected     = wrappedItems.map(item => true);
+    const isInstanceof = wrappedItems.map(item => item instanceof testItbl._Wrapper);
+    const isIterable   = wrappedItems.map(testItbl.isIterable);
 
     assert.deepEqual(isInstanceof, expected, 'instanceof');
     assert.deepEqual(isIterable, expected, 'isIterable');
@@ -522,15 +475,14 @@
   QUnit.test('`itbl(iterator)` returns an iterator', assert => {
     assert.expect(1);
 
-    const expected    = iterators.map(item => true);
-    const isIterator  = iterators.map(testItbl).map(testItbl.isIterator);
+    const expected   = iterators.map(item => true);
+    const isIterator = iterators.map(testItbl).map(testItbl.isIterator);
 
     assert.deepEqual(isIterator, expected, 'isIterator');
   });
 
   QUnit.test('`itbl(itbl())` returns itbl instance', assert => {
     assert.expect(1);
-
 
     assert.deepEqual(wrappedItems.map(testItbl), wrappedItems);
   });
@@ -539,10 +491,11 @@
     assert.expect(1);
 
     let errors = normalValues.map(value => {
-      try{
+      try {
         testItbl(value);
         return false;
-      }catch(e){
+      }
+      catch (e) {
         return true;
       }
     });
@@ -557,16 +510,16 @@
   QUnit.test('`itbl(function() { return notIterableOrIterator })` throws when iterated over`', assert => {
     assert.expect(1);
 
-
     let errors = normalValues.map(value => {
 
       // this shouldn't throw
       let wrapped = testItbl(() => value);
 
-      try{
+      try {
         [...wrapped];
         return false;
-      }catch(e){
+      }
+      catch (e) {
         return true;
       }
     });
@@ -577,35 +530,34 @@
     );
   });
 
-  QUnit.test('`itbl(function() { ... })` function should be called when (and only when) iterator is produced', assert => {
-    assert.expect(3);
+  QUnit.test('`itbl(function() { ... })` function should be called when (and only when) iterator is produced',
+    assert => {
+      assert.expect(3);
 
+      let flag = 0;
 
-    let flag = 0;
+      const sideEffect = testItbl(function() {
+        flag++;
+        return [1, 2, 3, 5];
+      });
 
-    const sideEffect = testItbl(function () {
-      flag++;
-      return [1, 2, 3, 5];
+      assert.strictEqual(flag, 0, 'function not called before wrapper is iterated over');
+      [...sideEffect];
+      assert.strictEqual(flag, 1, 'function is called once when wrapper is iterated');
+      [...sideEffect];
+      assert.strictEqual(flag, 2, 'function is called again for a second iteration iteration');
     });
-
-
-    assert.strictEqual(flag, 0, 'function not called before wrapper is iterated over');
-    [...sideEffect];
-    assert.strictEqual(flag, 1, 'function is called once when wrapper is iterated');
-    [...sideEffect];
-    assert.strictEqual(flag, 2, 'function is called again for a second iteration iteration');
-  });
 
   QUnit.test('`itbl(function() { return iterable })` should return `iterable` wrapped', assert => {
     assert.expect(3);
 
-    const symb = Symbol('aSymbol');
-    const anIterable = testItbl(function () {
+    const symb       = Symbol('aSymbol');
+    const anIterable = testItbl(function() {
       return {
         * [Symbol.iterator]() {
           yield symb;
         }
-      }
+      };
     });
 
     assert.deepEqual([symb], [...anIterable], 'iterables');
@@ -616,9 +568,9 @@
   QUnit.test('`itbl(function() { return iterator })` should return an iterable that produces `iterator`\'s', assert => {
     assert.expect(4);
 
-    const symb = Symbol('aSymbol');
-    const anIterable = testItbl(function () {
-      return [symb][Symbol.iterator]()
+    const symb       = Symbol('aSymbol');
+    const anIterable = testItbl(function() {
+      return [symb][Symbol.iterator]();
     });
 
     assert.deepEqual([symb], [...anIterable], 'iterables');
@@ -627,12 +579,10 @@
     assert.notOk(testItbl.isIterator(anIterable), 'not isIterator');
   });
 
-
   /*--------------------------------------------------------------------------*/
 
-
   QUnit.config.asyncRetries = 10;
-  QUnit.config.hidepassed = true;
+  QUnit.config.hidepassed   = true;
 
   if (!root.document) {
     QUnit.config.noglobals = true;
@@ -640,5 +590,3 @@
     QUnit.start();
   }
 }).call(this, this);
-
-
