@@ -21,10 +21,6 @@ Then using [Node.js](https://nodejs.org) or [Browserify](http://browserify.org).
 ```js
 // Load the full build.
 let itbl = require('itbl');
-
-// Load indevidual methods
-var map = require('itbl/map');
-var wrap = require('itbl/wrap'); 
 ```
 
 ## Contributing
