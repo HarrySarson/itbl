@@ -2,8 +2,6 @@
 
 A collection of javascript utility functions designed to unlock the full potential of [the es6 iterable protocol.](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols) 
 
-The libary will run in es5 environments and supports poly/ponyfilled implementations of iterators.
-
 * [**API Documentation**](https://github.com/HarrySarson/itbl/tree/master/doc)
 * [**View on npm**](https://www.npmjs.com/package/itbl)
 
