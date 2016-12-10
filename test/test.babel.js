@@ -581,6 +581,52 @@
 
   /*--------------------------------------------------------------------------*/
 
+  QUnit.module('built in iterables');
+
+  /* Ends iteration after `n` iterations.
+   *
+   *
+   * @static
+   * @since 2.2.0
+   * @param {Iterable} itbl.
+   * @param {Integer} n Maximum number of times to iterate.
+   *
+   * @returns {itbl} Returns an iterable
+   * @example
+   *
+   * var IterableUtil = itbl.noConflict();
+   */
+  function endAfter(iterable, n) {
+    return stableItbl(function*() {
+      let i = 0;
+      for (let value of iterable) {
+        if (i >= n) {
+          return;
+        }
+        yield value;
+        ++i;
+      }
+    });
+  }
+
+  QUnit.test('`itbl.indexes` should be an iterable of numbers from 0 to infinity', assert => {
+    assert.expect(1);
+
+    let n = 5;
+
+    assert.deepEqual([...endAfter(testItbl.indexes, n)], _.times(n, i => i));
+  });
+
+  QUnit.test('`itbl.integers` should be an iterable of numbers from 1 to infinity', assert => {
+    assert.expect(1);
+
+    let n = 5;
+
+    assert.deepEqual([...endAfter(testItbl.indexes, n)], _.times(n, i => i + 1));
+  });
+
+  /*--------------------------------------------------------------------------*/
+
   QUnit.config.asyncRetries = 10;
   QUnit.config.hidepassed   = true;
 

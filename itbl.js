@@ -886,6 +886,52 @@
   }
 
   /**
+   * An iterable containing integers from 0 to infinity
+   *
+   * @type {itbl}
+   * @const
+   *
+   * @example
+   *
+   * let set = new Set([1, 2, 3, 4, 'iyj', Math]);
+   *
+   * for (let [value, index] of itbl.combine([set, itbl.indexes])) {
+   *   console.log('index: ' + value);
+   * }
+   *
+   */
+  const indexes = _generateIterable(function() {
+    let i = 0;
+
+    return {
+      next() {
+        return i++;
+      },
+    };
+  });
+
+  /**
+   * An iterable containing integers from 1 to infinity
+   *
+   * @type {itbl}
+   * @const
+   *
+   * @example
+   *
+   * let squares = itbl.integers.map( i => i*i );
+   *
+   */
+  const integers = _generateIterable(function() {
+    let i = 1;
+
+    return {
+      next() {
+        return i++;
+      },
+    };
+  });
+
+  /**
    * Reverts the `itbl` variable to its previous value and returns a reference to
    * the `itbl` function.
    *
@@ -912,6 +958,8 @@
   Object.assign(itbl, {
     combine,
     filter,
+    indexes,
+    integers,
     isIterable,
     isIterator,
     itbl,
