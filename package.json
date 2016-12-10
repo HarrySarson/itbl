@@ -4,6 +4,8 @@
   "description": "Utility libary for es6 iterators",
   "main": "itbl.js",
   "scripts": {
+    "preversion": "git checkout -- doc && npm test && npm run test:doc && npm run style",
+    "version": "npm run doc && git add -A doc",
     "style": "npm run style:main",
     "style:main": "jscs itbl.js",
     "style:test": "jscs test/*.js",
