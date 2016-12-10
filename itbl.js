@@ -905,7 +905,10 @@
 
     return {
       next() {
-        return i++;
+        return {
+          value: i++,
+          done: false,
+        };
       },
     };
   });
@@ -926,7 +929,10 @@
 
     return {
       next() {
-        return i++;
+        return {
+          value: i++,
+          done: false,
+        };
       },
     };
   });
