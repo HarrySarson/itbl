@@ -622,7 +622,7 @@
 
     let n = 5;
 
-    assert.deepEqual([...endAfter(testItbl.indexes, n)], _.times(n, i => i + 1));
+    assert.deepEqual([...endAfter(testItbl.integers, n)], _.times(n, i => i + 1));
   });
 
   /*--------------------------------------------------------------------------*/
