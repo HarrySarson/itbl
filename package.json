@@ -12,8 +12,9 @@
     "test": "npm run test:main",
     "test:doc": "markdown-doctest doc/*.md",
     "test:main": "babel-node test/test.babel.js",
-    "doc": "babel-node lib/build-doc.babel.js github && npm run test:doc",
-    "doc:site": "node lib/build-doc site"
+    "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
+    "doc:site": "jsdoc -c .jsdoc.json && node lib/postprocess-html",
+    "doc:md": "node lib/build-md"
   },
   "keywords": [
     "util",
@@ -34,6 +35,8 @@
     "itbl": "1.1.2",
     "jscs": "^3.0.7",
     "lodash": "^4.16.3",
-    "qunit-extras": "^2.1.0"
+    "minami": "^1.1.1",
+    "qunit-extras": "^2.1.0",
+	"replace-in-file": "2.0.3"
   }
 }
