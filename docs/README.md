@@ -1,4 +1,4 @@
-# <a href="https://harrysarson.github.io/itbl">itbl</a> <span>v2.2.2</span>
+# <a href="https://harrysarson.github.io/itbl">itbl</a> <span>v2.2.3</span>
 
 <!-- div class="toc-container" -->
 
@@ -37,7 +37,7 @@
 <!-- div -->
 
 <h3 id="combinecollection-finishearly"><code>combine(collection, [finish='early'])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L805 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L805 "View in source") [&#x24C9;][1]
 
 Combines the iterables in `collection` into a single iterable containing collections
 of values from each iterable in `collection`.
@@ -118,7 +118,7 @@ for(let {x, y} of coordinates) {
 <!-- div -->
 
 <h3 id="filteriterable-predicate_identity"><code>filter(iterable, [predicate=_.identity])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L666 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L666 "View in source") [&#x24C9;][1]
 
 Creates a new iterable containing values which the `predicate` returns truthy for.
 
@@ -167,7 +167,7 @@ var users = [
 <!-- div -->
 
 <h3 id="isiterablevalue"><code>isIterable(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L272 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L272 "View in source") [&#x24C9;][1]
 
 Checks if `value` is an iterable object according to es6 iterator protocols.
 In order to be iterable, an object must implement the **@@iterator** method,
@@ -214,7 +214,7 @@ itbl.isIterable({1: 1, 2: 2, 3: 3});
 <!-- div -->
 
 <h3 id="itblvalue"><code>itbl(value)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L513 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L513 "View in source") [&#x24C9;][1]
 
 Wraps `value` to produce an object that conforms to the
 iterable protocol and - if `value` is an iterator - the iterator protocol.
@@ -325,7 +325,7 @@ let arrayReverse = function arrayReverse(array) {
 <!-- div -->
 
 <h3 id="itbl_wrapperoptions"><code>itbl._Wrapper([options={}])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L109 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L109 "View in source") [&#x24C9;][1]
 
 Create a new Wrapped iterable/iterator.
 
@@ -347,7 +347,7 @@ object with two properties done and value.
 <!-- div -->
 
 <h3 id="itbl_wrapper-[Symbol.iterator]"><code>itbl._Wrapper#[Symbol.iterator]()</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L143 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L143 "View in source") [&#x24C9;][1]
 
 Get an iterator to the wrapped iterable.
 <br>
@@ -368,7 +368,7 @@ By default returns its self but will be overwritten if a
 <!-- div -->
 
 <h3 id="itbl_wrapper-next"><code>itbl._Wrapper#next()</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L160 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L160 "View in source") [&#x24C9;][1]
 
 Get the next value of this iterator.
 <br>
@@ -388,7 +388,7 @@ Get the next value of this iterator.
 <!-- div -->
 
 <h3 id="itbl_wrapper-throwexception"><code>itbl._Wrapper#throw(exception)</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L195 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L195 "View in source") [&#x24C9;][1]
 
 The throw() method resumes the execution of a generator by throwing an error into it and returns an
 object with two properties done and value.
@@ -413,7 +413,7 @@ object with two properties done and value.
 <!-- div -->
 
 <h3 id="mapiterable-iteratee_identity"><code>map(iterable, [iteratee=_.identity])</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L590 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L590 "View in source") [&#x24C9;][1]
 
 Creates a new iterable whose iterators will have values corresponding to the value
 of the Iterator of the original iterable run through `iteratee`.
@@ -456,7 +456,7 @@ var users = [
 <!-- div -->
 
 <h3 id="noconflict"><code>noConflict()</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L974 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L974 "View in source") [&#x24C9;][1]
 
 Reverts the `itbl` variable to its previous value and returns a reference to
 the `itbl` function.
@@ -484,7 +484,7 @@ var IterableUtil = itbl.noConflict();
 <!-- div -->
 
 <h3 id="indexes"><code>indexes</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L925 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L925 "View in source") [&#x24C9;][1]
 
 (itbl): An iterable containing integers from `0` to infinity
 
@@ -503,7 +503,7 @@ for (let [value, index] of itbl.combine([set, itbl.indexes])) {
 <!-- div -->
 
 <h3 id="integers"><code>integers</code></h3>
-[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.2/itbl.js#L949 "View in source") [&#x24C9;][1]
+[&#x24C8;](https://github.com/harrysarson/itbl/blob/v2.2.3/itbl.js#L949 "View in source") [&#x24C9;][1]
 
 (itbl): An iterable containing integers from `1` to infinity
 
