@@ -32,7 +32,7 @@
   /** Used to restore the original `itbl` reference in `itbl.noConflict`. */
   const oldItbl = root.itbl;
 
-  /** Used to access `@@iterator` method */
+  /** Used to access `[Symbol.iterator]` method */
   const iteratorSymbol = Symbol.iterator;
 
   /**
@@ -95,14 +95,16 @@
     /**
      * Create a new Wrapped iterable/iterator.
      *
+     * @constructor
+     * <!-- replace for docdown -->
      * @since 0.1.0
      *
-     * @param {object} [params]
-     * @param {function} [params.next] Method which gets next value of iterator.
-     * @param {function} [params.throw] Method which resumes the execution of a generator by throwing an error into it and returns an
+     * @param {Object} [options = {}]
+     * @param {function} [options.next] Method which gets next value of iterator.
+     * @param {function} [options.throw] Method which resumes the execution of a generator by throwing an error into it and returns an
      * object with two properties done and value.
-     * @param {function} [params.return] Method which returns given value and finishes the iterator.
-     * @param {function} [params.@@iterator] Method which gets iterator to an iterable.
+     * @param {function} [options.return] Method which returns given value and finishes the iterator.
+     * @param {function} [options.[Symbol.iterator]] Method which gets iterator to an iterable.
      *
      */
     constructor({ [iteratorSymbol]: iterMethod, next, throw: thw, return: rtn } = {}) {
@@ -131,7 +133,8 @@
      * By default returns its self but will be overwritten if a
      * [Symbol.iterator] method is passed to the constructor.
      *
-     * @alias itbl._Wrapper#@@iterator
+     * @function
+     * @name itbl._Wrapper#[Symbol.iterator]
      *
      * @since 2.0.0
      * @returns {itbl._Wrapper} Returns a wrapped iterator.
@@ -139,7 +142,7 @@
      * @throws Throws if the wrapped value is an iterator or an iterable whose [Symbol.iterator]
      * method throws.
      */
-    [Symbol.iterator]() {
+    [iteratorSymbol]() {
       return this;
     }
   }
@@ -235,9 +238,9 @@
 
   /**
    * Checks if `value` is an iterable object according to es6 iterator protocols.
-   * In order to be iterable, an object must implement the @@iterator method,
+   * In order to be iterable, an object must implement the **@@iterator** method,
    * meaning that the object (or one of the objects up its prototype chain)
-   * must have a property with a Symbol.iterator key which defines a function.
+   * must have a property with a `[Symbol.iterator]` key which defines a function.
    * (https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
    *
    * @static
@@ -290,11 +293,11 @@
    * @since 0.1.0
    *
    * @param {Iterator} iterator Iterator to wrap.
-   * @param {object} [methods]
+   * @param {Object} [methods]
    * @param {function} [methods.next] Replacement `next` method.
    * @param {function} [methods.return] Replacement `return` method.
    * @param {function} [methods.throw] Replacement `throw` method.
-   * @param {function} [methods.@@iterator] Replacement `[Symbol.iterator]` method.
+   * @param {function} [methods.[Symbol.iterator]] Replacement `[Symbol.iterator]` method.
    *
    * @returns {itbl._Wrapper} Wrapped iterator.
    * @noexcept
@@ -333,7 +336,7 @@
    * @param {function} [methods.next] Replacement `next` method.
    * @param {function} [methods.return] Replacement `return` method.
    * @param {function} [methods.throw] Replacement `throw` method.
-   * @param {function} [methods.@@iterator] Replacement `[Symbol.iterator]` method.
+   * @param {function} [methods.[Symbol.iterator]] Replacement `[Symbol.iterator]` method.
    *
    * @returns {itbl._Wrapper} Wrapped iterable.
    * @throws Throws `Error` if the objects returned by the `[Symbol.iterator]` method are not iterators.
