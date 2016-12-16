@@ -4,17 +4,17 @@
   "description": "Utility libary for es6 iterators",
   "main": "itbl.js",
   "scripts": {
-    "preversion": "git checkout -- doc && npm test && npm run style",
-    "version": "npm run doc && npm run test:doc && git add -A doc",
+    "preversion": "git checkout -- docs && npm test && npm run style",
+    "version": "npm run doc && npm run test:doc && git add -A docs",
     "style": "npm run style:main",
     "style:main": "jscs itbl.js",
     "style:test": "jscs test/*.js",
     "test": "npm run test:main",
-    "test:doc": "markdown-doctest doc/*.md",
+    "test:doc": "markdown-doctest docs/*.md",
     "test:main": "babel-node test/test.babel.js",
     "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
-    "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm doc/replaced -r",
-    "doc:md": "babel-node lib/preprocess-md && node lib/build-md && rm doc/replaced -r"
+    "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm docs/replaced -r",
+    "doc:md": "babel-node lib/preprocess-md && node lib/build-md && rm docs/replaced -r"
   },
   "keywords": [
     "util",

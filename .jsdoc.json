@@ -5,7 +5,7 @@
   },
   "source": {
     "include": [
-      "./doc/replaced/itbl.js",
+      "./docs/replaced/itbl.js",
       "README.md"
     ]
   },
@@ -18,7 +18,7 @@
     "useLongnameInNav": 4
   },
   "opts": {
-    "destination": "./doc/",
+    "destination": "./docs/",
     "encoding": "utf8",
     "private": false,
     "recurse": true,
