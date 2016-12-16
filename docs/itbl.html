@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>itbl - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="itbl._Wrapper.html">_Wrapper</a><ul class='methods'><li data-type='method'><a href="itbl._Wrapper.html#[Symbol.iterator]">[Symbol.iterator]</a></li><li data-type='method'><a href="itbl._Wrapper.html#next">next</a></li><li data-type='method'><a href="itbl._Wrapper.html#return">return</a></li><li data-type='method'><a href="itbl._Wrapper.html#throw">throw</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="itbl.html">itbl</a><ul class='methods'><li data-type='method'><a href="itbl.html#.combine">combine</a></li><li data-type='method'><a href="itbl.html#.filter">filter</a></li><li data-type='method'><a href="itbl.html#.isIterable">isIterable</a></li><li data-type='method'><a href="itbl.html#.isIterator">isIterator</a></li><li data-type='method'><a href="itbl.html#.map">map</a></li><li data-type='method'><a href="itbl.html#.noConflict">noConflict</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">itbl</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        itbl
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="itbl._Wrapper.html">_Wrapper</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".combine"><span class="type-signature">(static) </span>combine<span class="signature">(collection, finish<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="itbl._Wrapper.html">itbl._Wrapper</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Combines the iterables in <code>collection</code> into a single iterable containing collections
+of values from each iterable in <code>collection</code>.</p>
+<p><code>collection</code> can either be an Iterable or an object containing Iterables which
+will be combined. The first value in the combined Iterable will be an Iterable or
+an object containing the first values of the Iterables in <code>collection</code>, the second
+value containing the second values of the Iterables in <code>collection</code> and so on.</p>
+<p>The value of <code>finish</code> determines when the iteration ends.</p>
+<ul>
+<li><p>If <code>finish === 'early' or 'e'</code> (default) then the iteration ends as soon as the first iterator from
+<code>collection</code> ends.</p>
+</li>
+<li><p>If <code>finish === 'late' or 'l'</code> then the iteration continues untill all iterators from <code>collection</code> are done.
+Values corresponding to iterators that have ended are <code>undefined</code>.</p>
+</li>
+<li><p>If <code>finish === 'together' or 't'</code> then all iterators from <code>collection</code> must finish on the same iteration or
+else an <code>Error</code> is thrown.</p>
+</li>
+</ul>
+<p><strong>Note</strong>: The return value of the iterator is a collection of the of the return values the iterators
+from <code>collection</code>. Return values corresponding to iterators that have not yet ended are <code>undefined</code></p>
+<p><code>combine</code> is particularly powerful when used with
+<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">es6 destructuring assignment</a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>collection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Collection of iterators</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>finish</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'early'
+                
+                </td>
+            
+
+            <td class="description last"><p>Flag determining when iteration will finish.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line805">line 805</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Iterable containing collection of values</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="itbl._Wrapper.html">itbl._Wrapper</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let mySet = new Set();mySet.add(1);mySet.add(Math);[...itbl.combine([['a','b','c'], mySet, ['alpha','beta', 'gamma']])];// -> [['a', 1, 'alpha'], ['b', Math, 'beta']]// with `finish === late`[...itbl.combine([['a','b','c'], ['alpha','beta', 'gamma'], mySet], 'late')];// [['a', 1, 'alpha'], ['b', Math, 'beta'], ['c', undefined, 'gamma']]let coordinates = itbl.combine({  x: [1,2,3,4,5],  y: [1,4,9,16,25],});for(let coor of coordinates) {  context.lineTo(coor.x, coor.y);}// more concise syntax using object destructuringfor(let {x, y} of coordinates) {  context.lineTo(x,y);}</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".filter"><span class="type-signature">(static) </span>filter<span class="signature">(iterable, predicate<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="itbl._Wrapper.html">itbl._Wrapper</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a new iterable containing values which the <code>predicate</code> returns truthy for.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>iterable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Iterable to filter the values of.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>predicate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    _.identity
+                
+                </td>
+            
+
+            <td class="description last"><p>Function to run each value though.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line666">line 666</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Throws an error if iterators are not supported or the <code>iterable</code> is not iterable.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p><code>iterable</code> filtered using <code>predicate</code>, if <code>iterable</code> was an iterator then
+an iterator is returned, otherwise an iterable is returned.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="itbl._Wrapper.html">itbl._Wrapper</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>[...itbl.filter([0,1,2,3,4,5], val => val%2 === 0)];// [0,2,4]let mySet = new Set().add(1).add('a').add(NaN);[...itbl.filter(mySet, value => _.isFinite)];// [1]var users = [  { 'user': 'barney', 'age': 36, 'active': true },  { 'user': 'fred',   'age': 40, 'active': false }];[...itbl.filter(users, function(o) { return !o.active; })];// => objects for ['fred'][...itbl.filter(users, _.matches({ 'age': 36, 'active': true }))];// => objects for ['barney'][...itbl.filter(users, _.matchesProperty('active', false))];// => objects for ['fred'][...itbl.filter(users, _.property('active'))];// => objects for ['barney']</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isIterable"><span class="type-signature">(static) </span>isIterable<span class="signature">(value)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Checks if <code>value</code> is an iterable object according to es6 iterator protocols.
+In order to be iterable, an object must implement the <strong>@@iterator</strong> method,
+meaning that the object (or one of the objects up its prototype chain)
+must have a property with a <code>[Symbol.iterator]</code> key which defines a function.
+(https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to check.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line272">line 272</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns <code>true</code> if <code>value</code> is correctly classified, else <code>false</code>.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>function MyIterable() { }MyIterable.prototype[Symbol.iterator] = function*(){  while(true) yield 1;}let iterableInstance = new MyIterable();itbl.isIterable(iterableInstance);// => true// generator function that is then calleditbl.isIterable(iterableInstance[Symbol.iterator]());// => true (this is both an iterator and also iterable)itbl.isIterable([1, 2, 3]);// => trueitbl.isIterable({1: 1, 2: 2, 3: 3});// => false</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".isIterator"><span class="type-signature">(static) </span>isIterator<span class="signature">(value)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Checks if <code>value</code> is an iterator according to es6 iterator protocols.
+An object is an iterator when it implements a next() method. See <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator">https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator</a>
+for more information.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value to check.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line232">line 232</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns <code>true</code> if <code>value</code> is correctly classified, else <code>false</code>.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>function MyIterable() { }MyIterable.prototype[Symbol.iterator] = function*() {  while(true) yield 1;};let iterableInstance = new MyIterable();itbl.isIterator(iterableInstance);// => false (this is an iterable but NOT an iterator)// generator function that is then calleditbl.isIterator(iterableInstance[Symbol.iterator]());// => true (this is both an iterator and also iterable)itbl.isIterator([1, 2, 3][Symbol.iterator]());// => truefor(let i of ['a'])  itbl.isIterator(i)// => false (i is equal to 'a')</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".map"><span class="type-signature">(static) </span>map<span class="signature">(iterable, iteratee<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="itbl._Wrapper.html">itbl._Wrapper</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a new iterable whose iterators will have values corresponding to the value
+of the Iterator of the original iterable run through <code>iteratee</code>.
+The iteratee is invoked with only one argument (value).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>iterable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Iterable to map values of.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>iteratee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    _.identity
+                
+                </td>
+            
+
+            <td class="description last"><p>Function to run each value though.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.1.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line590">line 590</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>Throws an error if <code>iterable</code> is not iterable.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p><code>iterable</code> mapped through <code>iteratee</code>, if <code>iterable</code> was an iterator then
+an iterator is returned, otherwise an iterable is returned.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="itbl._Wrapper.html">itbl._Wrapper</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>for(let coor of itbl.map([0, 1, 2, 3, 4, 5], x => ({ x, y: Math.exp(x) }))) {  context.lineTo(coor.x, coor.y);}let mySet = new Set().add(1).add('a').add(NaN);[...itbl.map(mySet, value => value + 1)];// [2, 'a1', NaN]var users = [  { 'user': 'barney' },  { 'user': 'fred' },];[...itbl.map(users, _.property('user'))];// => ['barney', 'fred']</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".noConflict"><span class="type-signature">(static) </span>noConflict<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="itbl.html">itbl</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Reverts the <code>itbl</code> variable to its previous value and returns a reference to
+the <code>itbl</code> function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line974">line 974</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Returns the <code>itbl</code> function.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="itbl.html">itbl</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var IterableUtil = itbl.noConflict();</code></pre>
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".Step">Step</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="itbl.js.html">itbl.js</a>, <a href="itbl.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Dec 16 2016 15:24:09 GMT+0000 (STD) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
