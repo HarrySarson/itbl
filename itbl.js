@@ -71,8 +71,7 @@
 
   /**
    * @namespace itbl
-   */ 
-   
+   */
 
   /**
    * @memberof itbl
@@ -108,27 +107,26 @@
      *
      */
     constructor({ [iteratorSymbol]: iterMethod, next, throw: thw, return: rtn } = {}) {
-      
+
       // override default [Symbol.iterator] method
       if (iterMethod != null) {
         this[iteratorSymbol] = iterMethod;
       }
-      
+
       if (next != null) {
         this.next = next;
-      } 
-      
+      }
+
       if (rtn != null) {
         this.return = rtn;
-      } 
+      }
 
       if (thw != null) {
         this.throw = thw;
-      }      
+      }
     }
-    
     /**
-     * Get an iterator to the wrapped iterable. 
+     * Get an iterator to the wrapped iterable.
      *
      * By default returns its self but will be overwritten if a
      * [Symbol.iterator] method is passed to the constructor.
@@ -146,9 +144,8 @@
       return this;
     }
   }
-    
   /**
-   * Get the next value of this iterator. 
+   * Get the next value of this iterator.
    *
    * ** This method is only defined if the wrapped value is an iterator. **
    *
@@ -160,8 +157,6 @@
    * @throws Throws if the wrapped iterator's next method throws.
    *
    */
-   
-     
   /**
    * Returns given value and finishes the iterator.
    *
@@ -199,7 +194,7 @@
 
   /**
    * Checks if `value` is an iterator according to es6 iterator protocols.
-   * An object is an iterator when it implements a next() method. See {@link 
+   * An object is an iterator when it implements a next() method. See {@link
    * https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols#iterator}
    * for more information.
    *
@@ -293,7 +288,7 @@
    * @since 0.1.0
    *
    * @param {Iterator} iterator Iterator to wrap.
-   * @param {Object} [methods]
+   * @param {Object} [methods] Methods to replace in wrapped iterator.
    * @param {function} [methods.next] Replacement `next` method.
    * @param {function} [methods.return] Replacement `return` method.
    * @param {function} [methods.throw] Replacement `throw` method.
@@ -330,9 +325,9 @@
    * @static
    * @memberof itbl
    * @since 0.1.0
-   
+   *
    * @param {Iterable} iterable Iterable to wrap.
-   * @param {object} methods
+   * @param {object} methods Methods to replace in wrapped iterator.
    * @param {function} [methods.next] Replacement `next` method.
    * @param {function} [methods.return] Replacement `return` method.
    * @param {function} [methods.throw] Replacement `throw` method.
@@ -549,9 +544,9 @@
 
     throw new Error('itbl(): value is not an iterable, an iterator or a generator function');
   };
-  
+
   const wrap = itbl;
-  
+
   itbl.itbl = itbl.wrap = itbl;
   itbl.prototype = _Wrapper.prototype;
   itbl.prototype.constructor = itbl;
@@ -982,7 +977,6 @@
     }
     return this;
   }
-  
 
   Object.assign(itbl, {
     combine,
