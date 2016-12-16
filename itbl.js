@@ -417,7 +417,7 @@
    * - If `value` returns an iterator it will be wrapped
    * - If `value` returns an iterable then its
    * `[Symbol.iterator]` method will be called and that iterator wrapped.
-   * - If `value` returns any other value (including a function) an expception
+   * - If `value` returns any other value (including a function) an exception
    * will be thrown.
    *
    * Therefore all of these are roughly equivalent:
