@@ -2,7 +2,7 @@
 
 A collection of javascript utility functions designed to unlock the full potential of [the es6 iterable protocol.](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols) 
 
-* [**API Documentation**](https://github.com/HarrySarson/itbl/tree/master/doc)
+* [**API Documentation**](https://harrysarson.github.io/itbl)
 * [**View on npm**](https://www.npmjs.com/package/itbl)
 
 
