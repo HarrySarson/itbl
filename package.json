@@ -4,16 +4,17 @@
   "description": "Utility libary for es6 iterators",
   "main": "itbl.js",
   "scripts": {
-    "preversion": "git checkout -- doc && npm test && npm run test:doc && npm run style",
-    "version": "npm run doc && git add -A doc",
+    "preversion": "git checkout -- doc && npm test && npm run style",
+    "version": "npm run doc && npm run test:doc && git add -A doc",
     "style": "npm run style:main",
     "style:main": "jscs itbl.js",
     "style:test": "jscs test/*.js",
     "test": "npm run test:main",
     "test:doc": "markdown-doctest doc/*.md",
     "test:main": "babel-node test/test.babel.js",
-    "doc": "babel-node lib/build-doc.babel.js github && npm run test:doc",
-    "doc:site": "node lib/build-doc site"
+    "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
+    "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm doc/replaced -r",
+    "doc:md": "babel-node lib/preprocess-md && node lib/build-md && rm doc/replaced -r"
   },
   "keywords": [
     "util",
@@ -31,10 +32,13 @@
     "bluebird": "^3.4.1",
     "docdown": "^0.7.1",
     "fs-extra": "^0.30.0",
+    "glob": "^7.1.1",
     "itbl": "1.1.2",
     "jscs": "^3.0.7",
     "lodash": "^4.16.3",
-	"markdown-doctest": "^0.9.1",
-    "qunit-extras": "^2.1.0"
+    "markdown-doctest": "^0.9.1",
+    "minami": "^1.1.1",
+    "qunit-extras": "^2.1.0",
+    "replace-in-file": "2.0.3"
   }
 }

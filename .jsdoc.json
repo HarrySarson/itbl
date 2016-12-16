@@ -1,0 +1,27 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
+  "source": {
+    "include": [
+      "./doc/replaced/itbl.js",
+      "README.md"
+    ]
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "useLongnameInNav": 4
+  },
+  "opts": {
+    "destination": "./doc/",
+    "encoding": "utf8",
+    "private": false,
+    "recurse": true,
+    "template": "../minami"
+  }
+}
