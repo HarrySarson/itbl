@@ -834,6 +834,9 @@
       let rawCombined = combiningFunction(collection);
 
       return {
+        /**
+         * @type {Iterator}
+         */
         next: function() {
 
           let { values, returnValues, anyDone, allDone } = rawCombined();
@@ -953,6 +956,9 @@
     let i = 1;
 
     return {
+      /**
+       * @type {Iterator}
+       */
       next() {
         return {
           value: i++,
