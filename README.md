@@ -1,3 +1,5 @@
+[![Inline docs](http://inch-ci.org/github/harrysarson/itbl.svg?branch=master)](http://inch-ci.org/github/harrysarson/itbl)
+
 # itbl
 
 A collection of javascript utility functions designed to unlock the full potential of [the es6 iterable protocol.](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols) 
