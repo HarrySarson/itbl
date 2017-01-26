@@ -38,6 +38,7 @@
     "markdown-doctest": "^0.9.1",
     "minami": "^1.1.1",
     "qunit-extras": "^2.1.0",
+    "qunitjs": "^2.1.1",
     "replace-in-file": "2.0.3"
   }
 }
