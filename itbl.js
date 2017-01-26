@@ -926,6 +926,9 @@
     let i = 0;
 
     return {
+      /**
+       * @type {Iterator}
+       */
       next() {
         return {
           value: i++,
