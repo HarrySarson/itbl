@@ -339,7 +339,7 @@
    */
   const _wrapIterable = function _wrapIterable(iterable, methods) {
 
-    return new _Wrapper({
+    let wrapped = {
       [iteratorSymbol]() {
         let iter = iterable[iteratorSymbol]();
 
@@ -349,7 +349,8 @@
 
         return _wrapIterator(iter, methods);
       },
-    });
+    };
+    return new _Wrapper(wrapped);
   };
 
   /**
@@ -596,11 +597,8 @@
     if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error('itbl.map: `iterable` does not define the `[Symbol.iterator]` method');
     }
-
-    return (isIterator(iterable)
-      ? _wrapIterator
-      : _wrapIterable
-    )(iterable, {
+    
+    let iterator = {
       next() {
         const step = this.next();
         let mapped;
@@ -614,7 +612,12 @@
           done: step.done,
         };
       },
-    });
+    }
+    
+    return (isIterator(iterable)
+      ? _wrapIterator
+      : _wrapIterable
+    )(iterable, iterator);
   };
 
   _Wrapper.prototype.map = function(iteratee) {
@@ -672,11 +675,8 @@
     if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error('itbl.filter: `iterable` does not define the `[Symbol.iterator]` method');
     }
-
-    return (isIterator(iterable)
-            ? _wrapIterator
-            : _wrapIterable
-    )(iterable, {
+    
+    let iterator = {
       next() {
         let step;
 
@@ -684,7 +684,12 @@
 
         return step;
       },
-    });
+    };
+    
+    return (isIterator(iterable)
+            ? _wrapIterator
+            : _wrapIterable
+    )(iterable, iterator);
   };
 
   _Wrapper.prototype.filter = function(predicate) {
