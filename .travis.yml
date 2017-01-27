@@ -3,3 +3,10 @@ language: node_js
 node_js:
   - 7
   - 6
+
+notifications:
+  email:
+    recipients:
+        - harry.sarson@hotmail.co.uk
+    on_success: never
+    on_failure: always
