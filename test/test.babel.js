@@ -173,19 +173,29 @@
 
   QUnit.test('wrapIterator produces an iterator and iterable instance of itbl._Wrapper', assert => {
 
-    assert.expect(4);
+    assert.expect(6);
 
     const expected    = iterators.map(itorator => true);
     const wrapped     = iterators.map(testItbl._wrapIterator);
-    const isIterables = wrapped.map(stableItbl.isIterable);
-    const isIterators = wrapped.map(stableItbl.isIterator);
-    const instancesOf = wrapped.map(wrpd => wrpd instanceof testItbl._Wrapper);
     const resultOfIteratorMethod = wrapped.map(wrpd => wrpd[Symbol.iterator]());
+
+    let isIterables, isIterators, instancesOf;
+
+    isIterables = wrapped.map(stableItbl.isIterable);
+    isIterators = wrapped.map(stableItbl.isIterator);
+    instancesOf = wrapped.map(wrpd => wrpd instanceof testItbl._Wrapper);
 
     assert.deepEqual(isIterables, expected, 'isIterable');
     assert.deepEqual(isIterators, expected, 'isIterator');
     assert.deepEqual(instancesOf, expected, 'intanceof _Wrapper');
-    assert.deepEqual(wrapped, resultOfIteratorMethod, '[Symbol.iterator]() results this');
+
+    isIterables = resultOfIteratorMethod.map(stableItbl.isIterable);
+    isIterators = resultOfIteratorMethod.map(stableItbl.isIterator);
+    instancesOf = resultOfIteratorMethod.map(wrpd => wrpd instanceof testItbl._Wrapper);
+
+    assert.deepEqual(isIterables, isIterables, '[Symbol.iterator]() results an equivilent iterator');
+    assert.deepEqual(isIterators, isIterators, '[Symbol.iterator]() results an equivilent iterator');
+    assert.deepEqual(instancesOf, instancesOf, '[Symbol.iterator]() results an equivilent iterator');
   });
 
   QUnit.test('wrapIterator overwrites properties of `iterator` with those supplied in `methods`', assert => {
