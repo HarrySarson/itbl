@@ -1,5 +1,8 @@
 [![Inline docs](http://inch-ci.org/github/harrysarson/itbl.svg?branch=master)](http://inch-ci.org/github/harrysarson/itbl)
 [![Build Status](https://travis-ci.org/HarrySarson/itbl.svg?branch=master)](https://travis-ci.org/HarrySarson/itbl)
+[![Code Climate](https://codeclimate.com/github/HarrySarson/itbl/badges/gpa.svg)](https://codeclimate.com/github/HarrySarson/itbl)
+[![Test Coverage](https://codeclimate.com/github/HarrySarson/itbl/badges/coverage.svg)](https://codeclimate.com/github/HarrySarson/itbl/coverage)
+[![Test Coverage](https://david-dm.org/harrysarson/itbl.svg](https://david-dm.org/harrysarson/itbl)
 
 # itbl
 
