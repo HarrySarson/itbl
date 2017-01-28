@@ -171,7 +171,7 @@
 
   });
 
-  QUnit.test('wrapIterable produces an iterator and iterable instance of itbl._Wrapper', assert => {
+  QUnit.test('wrapIterator produces an iterator and iterable instance of itbl._Wrapper', assert => {
 
     assert.expect(3);
 
@@ -186,7 +186,7 @@
     assert.deepEqual(instancesOf, expected, 'intanceof _Wrapper');
   });
 
-  QUnit.test('wrapIterable overwrites properties of `iterator` with those supplied in `methods`', assert => {
+  QUnit.test('wrapIterator overwrites properties of `iterator` with those supplied in `methods`', assert => {
 
     assert.expect(2);
 
