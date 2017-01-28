@@ -173,17 +173,19 @@
 
   QUnit.test('wrapIterator produces an iterator and iterable instance of itbl._Wrapper', assert => {
 
-    assert.expect(3);
+    assert.expect(4);
 
     const expected    = iterators.map(itorator => true);
     const wrapped     = iterators.map(testItbl._wrapIterator);
     const isIterables = wrapped.map(stableItbl.isIterable);
     const isIterators = wrapped.map(stableItbl.isIterator);
     const instancesOf = wrapped.map(wrpd => wrpd instanceof testItbl._Wrapper);
+    const resultOfIteratorMethod = wrapped.map(wrpd => wrpd[Symbol.iterator]());
 
     assert.deepEqual(isIterables, expected, 'isIterable');
     assert.deepEqual(isIterators, expected, 'isIterator');
     assert.deepEqual(instancesOf, expected, 'intanceof _Wrapper');
+    assert.deepEqual(wrapped, resultOfIteratorMethod, '[Symbol.iterator]() results this');
   });
 
   QUnit.test('wrapIterator overwrites properties of `iterator` with those supplied in `methods`', assert => {
