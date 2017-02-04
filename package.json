@@ -14,6 +14,7 @@
     "test:main": "babel-node test/test.babel.js",
     "compile": "mkdir compiled && babel ./ --out-dir compiled --ignore node_modules --copy-files",
     "coverage": "istanbul compiled/test/test.js",
+    "coveralls": "coveralls",
     "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
     "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm docs/replaced -r",
     "doc:md": "babel-node lib/preprocess-md && node lib/build-md && rm docs/replaced -r"
@@ -31,6 +32,7 @@
     "babel-cli": "^6.14.0",
     "babel-preset-env": "^1.1.8",
     "bluebird": "^3.4.1",
+    "coveralls": "^2.11.15",
     "docdown": "^0.7.1",
     "fs-extra": "^0.30.0",
     "glob": "^7.1.1",

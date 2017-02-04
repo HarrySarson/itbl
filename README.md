@@ -1,8 +1,6 @@
 [![Inline docs](http://inch-ci.org/github/harrysarson/itbl.svg?branch=master)](http://inch-ci.org/github/harrysarson/itbl)
 [![Build Status](https://travis-ci.org/HarrySarson/itbl.svg?branch=master)](https://travis-ci.org/HarrySarson/itbl)
 [![Code Climate](https://codeclimate.com/github/HarrySarson/itbl/badges/gpa.svg)](https://codeclimate.com/github/HarrySarson/itbl)
-[![Coverage Status](https://coveralls.io/repos/<account>/<repository>/badge.svg?branch=master)](https://coveralls.io/r/<account>/<repository>?branch=master)
-[![Dependancies](https://david-dm.org/harrysarson/itbl.svg](https://david-dm.org/harrysarson/itbl)
 
 # itbl
 
