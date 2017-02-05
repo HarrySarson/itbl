@@ -18,7 +18,7 @@
     "compile:lib": "mkdirp compiled/test && babel lib --out-dir compiled/lib",
     "compile:test": "mkdirp compiled/test && babel test --out-dir compiled/test",
     "istanbul": "istanbul cover compiled/test/test.babel.js",
-    "coveralls": "coverage/lconv.info > coveralls",
+    "coveralls": "coverage/lcov.info > coveralls",
     "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
     "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm docs/replaced -r",
     "doc:md": "babel-node lib/preprocess-md && node lib/build-md && rm docs/replaced -r"
