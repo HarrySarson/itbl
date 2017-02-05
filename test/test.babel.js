@@ -19,7 +19,7 @@
   var stableItbl = root.stableItbl;
   if (!stableItbl) {
     try {
-      stableItbl = require('../node_modules/itbl/itbl.js');
+      stableItbl = require('itbl');
     }
     catch (e) {
       console.log('Error: The stable itbl dev dependency should be at least a version behind master branch.');
