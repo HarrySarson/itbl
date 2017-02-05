@@ -15,4 +15,4 @@ notifications:
 after_success: 
   npm run compile && 
   npm run istanbul &&
-  npm run coveralls;
+  npm run codecov;
