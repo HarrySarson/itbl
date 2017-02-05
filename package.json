@@ -18,7 +18,7 @@
     "compile:lib": "mkdirp compiled/test && babel lib --out-dir compiled/lib",
     "compile:test": "mkdirp compiled/test && babel test --out-dir compiled/test",
     "istanbul": "istanbul cover compiled/test/test.babel.js",
-    "coveralls": "coverage/lconv.info > coveralls",
+    "coveralls": "cat coverage/lcov.info > coveralls",
     "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
     "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm docs/replaced -r",
     "doc:md": "babel-node lib/preprocess-md && node lib/build-md && rm docs/replaced -r"
@@ -48,9 +48,10 @@
     "mkdirp": "^0.5.1",
     "markdown-doctest": "^0.9.1",
     "minami": "^1.1.1",
-    "qunitjs": "^2.1.1",
+    "mkdirp": "^0.5.1",
     "qunit-extras": "^2.1.0",
     "qunitjs": "^2.1.1",
-    "replace-in-file": "2.0.3"
+    "replace-in-file": "2.0.3",
+    "shelljs": "^0.7.6"
   }
 }
