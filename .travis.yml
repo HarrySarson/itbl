@@ -12,4 +12,7 @@ notifications:
     on_failure: always
 
 
-after_success: 'npm run coveralls'
+after_success: 
+  npm run compile && 
+  npm run istanbul &&
+  npm run coveralls;
