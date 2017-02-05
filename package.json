@@ -13,7 +13,7 @@
     "test:doc": "markdown-doctest docs/*.md",
     "test:main": "babel-node test/test.babel.js",
     "compile": "mkdir compiled && babel ./ --out-dir compiled --ignore node_modules --copy-files",
-    "istanbul": "istanbul compiled/test/test.js",
+    "istanbul": "istanbul cover compiled/test/test.js",
     "coveralls": "coverage/lconv.info > coveralls",
     "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
     "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && rm docs/replaced -r",
