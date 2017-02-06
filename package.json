@@ -26,8 +26,7 @@
   "keywords": [
     "util",
     "es6",
-    "iterator",
-    "backwards-compatible"
+    "iterator"
   ],
   "repository": "https://github.com/HarrySarson/itbl",
   "author": "Harry Sarson",
