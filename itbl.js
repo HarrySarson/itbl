@@ -597,7 +597,7 @@
     if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error('itbl.map: `iterable` does not define the `[Symbol.iterator]` method');
     }
-    
+
     let iterator = {
       next() {
         const step = this.next();
@@ -612,8 +612,8 @@
           done: step.done,
         };
       },
-    }
-    
+    };
+
     return (isIterator(iterable)
       ? _wrapIterator
       : _wrapIterable
@@ -675,7 +675,7 @@
     if (ARGS_CHECK && !isIterable(iterable)) {
       throw new Error('itbl.filter: `iterable` does not define the `[Symbol.iterator]` method');
     }
-    
+
     let iterator = {
       next() {
         let step;
@@ -685,7 +685,7 @@
         return step;
       },
     };
-    
+
     return (isIterator(iterable)
             ? _wrapIterator
             : _wrapIterable
