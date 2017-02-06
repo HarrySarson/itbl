@@ -6,4 +6,7 @@
       },
     }]
   ],
+  plugins: [
+    'transform-runtime',
+  ],
 }
