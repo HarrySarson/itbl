@@ -20,8 +20,8 @@
     "istanbul": "istanbul cover compiled/test/test.babel.js",
     "codecov": "codecov",
     "doc": "npm run doc:site && npm run doc:md && npm run test:doc",
-    "doc:site": "babel-node lib/preprocess-html && jsdoc -c .jsdoc.json && babel-node lib/postprocess-html && shx rm -r docs/replaced ",
-    "doc:md": "babel-node lib/preprocess-md && node lib/build-md && shx rm -r docs/replaced"
+    "doc:site": "node compiled/lib/preprocess-html && jsdoc -c .jsdoc.json && node compiled/lib/postprocess-html && shx rm -r docs/replaced ",
+    "doc:md": "node compiled/lib/preprocess-md && node compiled/lib/build-md && shx rm -r docs/replaced"
   },
   "keywords": [
     "util",
@@ -38,6 +38,7 @@
     "bluebird": "^3.4.1",
     "codecov": "^1.0.1",
     "docdown": "^0.7.1",
+    "find-up": "^2.1.0",
     "glob": "^7.1.1",
     "istanbul": "^0.4.5",
     "itbl": "1.1.2",
